@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+
+	<!-- DB 커넥션 정보 세팅 
+		dataSource, sqlSessionFactory, sqlSession
+	-->
+	<!--  DB 데이터 소스 DB 컨넥션 정보를 DataSource 타입으로 적어준다 -->
+	<!-- 오라클에서는 ?allowMultiQueries=true 옵션이 안되고 {call declare쓰는듯 -->
+	<context:property-placeholder location="classpath:/database.properties"/>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close"
+		p:driverClassName="${db.driver}"
+		p:url="${db.url}"
+		p:username="${db.username}"
+		p:password="${db.password}"	/>
+	<!-- 컨넥션 풀 역할 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+	</bean>
+	<!-- 커넥션:클라이언트맵퍼라고 한다
+		이전에 사용한 connection과 비슷한 역할
+		close()는 clearCache
+		mybatis는 연결이 되면 임시저장파일에 이전 접속 정보가 남아있기 때문에 컨넥션을 다시
+		처음부터 연결하지 않고 cache에 남아있는 정보를 가져다 쓰므로 빠르다. 그래서 대용량
+		처리에 유용하다.(조금 무거울지라도) -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
 </beans>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  <!-- 여기는 mybatis관련 설정파일 -->
+<configuration>
+	<!--  순서대로 쓰지 않으면 에러 -->
+	<!-- jdbcTypeForNull 에러발생 방지 / null값이 넘어갔을 때 db에 문제가 되지 않게 처리 하는 것 -->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<!-- 별칭 alias 설정
+	<typeAliases>
+		<typeAlias type="com.cjc.seektam.test.TestDTO" alias="testDTO" />
+	</typeAliases>
+	-->
+	<!-- mapper 파일 위치 세팅
+	<mappers>
+		<mapper resource="/mapper/testSQL.xml"/>
+	</mappers>
+	 -->
+</configuration>
