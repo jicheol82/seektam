@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<insert id="insertMember" parameterType="memberDTO">
+		insert into member values(#{id},#{pw},#{email},#{mobile},#{area1},#{area2},#{birth},#{reputation},#{platform_type},#{access_token},sysdate)
+	</insert>
+	<select id="idPwCheck" parameterType="memberDTO" resultType="int">
+		select count(*) from member where id=#{id} and pw=#{pw}
+	</select>
+	<select id="selectMember" parameterType="string" resultType="memberDTO">
+		select * from member where id=#{id}
+	</select>
+	<update id="updateMember" parameterType="memberDTO">
+		<!-- 동적 sql -->
+		update member
+		<trim prefix="set" suffixOverrides=",">
+			<if test="pw != null">pw=#{pw},</if>
+			<!-- dto에 age의 값을 int(기본형)으로 하면 아래 null대신 0을 써야함 -->
+			<if test="email != null">email=#{email}</if>
+			<if test="mobile != null">email=#{email}</if>
+			<if test="area1 != null">email=#{email}</if>
+			<if test="area2 != null">email=#{email}</if>
+			<if test="email != null">email=#{email}</if>
+			<if test="birth != null">email=#{email}</if>
+		</trim>
+		where id=#{id}
+	</update>
+	<delete id="deleteMember" parameterType="string">
+		delete from member where id=#{id}
+	</delete>
+	<select id="idAvail" parameterType="string" resultType="int">
+		select count(id) from member where id=#{id}
+	</select>
+</mapper>

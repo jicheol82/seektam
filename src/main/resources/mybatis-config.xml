@@ -10,14 +10,14 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	
-	<!-- 별칭 alias 설정
+	<!-- 별칭 alias 설정-->
 	<typeAliases>
-		<typeAlias type="com.cjc.seektam.test.TestDTO" alias="testDTO" />
+		<typeAlias type="com.cjc.seektam.dto.member.MemberDTO" alias="memberDTO" />
 	</typeAliases>
-	-->
-	<!-- mapper 파일 위치 세팅
+	
+	<!-- mapper 파일 위치 세팅-->
 	<mappers>
-		<mapper resource="/mapper/testSQL.xml"/>
+		<mapper resource="/mapper/memberSQL.xml"/>
 	</mappers>
-	 -->
+	 
 </configuration>
