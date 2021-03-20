@@ -1,17 +1,11 @@
 package com.cjc.seektam;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.cjc.seektam.dto.member.MemberDTO;
 import com.cjc.seektam.service.member.MemberService;
 
@@ -38,54 +32,31 @@ public class HomeController {
 		return "member/loginForm";
 	}
 	
-	@RequestMapping("/loginPro")
-	public String loginPro() {
+	@RequestMapping("/loginpro")
+	public String loginPro(MemberDTO dto, Model model) throws Exception {
+		int result = memberService.idPwCheck(dto);
+		System.out.println("ctrler result : "+result);
+		model.addAttribute("result", result);
 		return "member/loginPro";
 	}
-	
-	@RequestMapping("/logout")
-	public String logout() {
-		return "member/logout";
-	}
-	
+		
 	@RequestMapping("/signup")
 	public String signup() {
 		return "member/signupForm";
 	}
 	
-	@RequestMapping("/signupPro")
+	@RequestMapping("/signuppro")
 	public String signupPro(MemberDTO dto) throws Exception {
 		memberService.addMember(dto);
-		return "signupPro";
+		return "member/signupPro";
 	}
 	
-	@RequestMapping("/deleteAccount")
-	public String deleteAccount() {
-		return "member/deleteForm";
-	}
-	
-	@RequestMapping("/deleteAccountPro")
-	public String deleteAccountPro() {
-		return "member/deletePro";
-	}
-	
-	@RequestMapping("/confirmId")
-	public String confirmId() {
+	@RequestMapping("/confirmid")
+	public String confirmId(String id, Model model) throws Exception{
+		int check = memberService.idCheck(id);
+		model.addAttribute("check", check);
+		model.addAttribute("trialId", id);
 		return "member/confirmId";
 	}
-	
-	@RequestMapping("/myAccount")
-	public String myAccount() {
-		return "member/modifyForm";
-	}
-	
-	@RequestMapping("/myAccountPro")
-	public String myAccountPro() {
-		return "member/modifyPro";
-	}
-	
-	
-	
-	
 	
 }

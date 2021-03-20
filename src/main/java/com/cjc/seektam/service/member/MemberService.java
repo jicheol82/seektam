@@ -15,8 +15,6 @@ public interface MemberService {
 	public int idCheck(String id) throws Exception;
 	// 로그아웃
 	public void logout(String sessionName) throws Exception;
-	// 세션 삭제(로그아웃)
-	public void removeSessionAttr(String sessionName);
 	// 회원탈퇴
 	public int deleteMember(MemberDTO dto) throws Exception;
 }

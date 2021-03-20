@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/views/layout/toplayout.jsp"/>
 	<h1 align="center"> 회원가입 </h1>
-	<form action="/seektam/modifyPro" method="post">
+	<form action="/seektam/myaccountpro" method="post">
 		<table>
 			<tr>
 				<td>아이디*</td>
