@@ -15,6 +15,7 @@
 <body>
 	<br/>
 	<h1 align="center">로그인</h1>
+	<h2>memid: ${sessionScope.memId}</h2>
 	<form action="/seektam/loginpro" method="post">
 		<table>
 			<tr>

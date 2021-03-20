@@ -22,7 +22,6 @@ public class MemberServiceImple implements MemberService {
 	public int idPwCheck(MemberDTO dto) throws Exception {
 		// id, pw로 check
 		int result = memberDAO.idPwCheck(dto);
-		System.out.println("servcie result : "+result);
 		// result 결과가 1이면 로근인 처리 하고 세션 생성
 		if(result == 1) {
 			setSessionAttr("memId", dto);

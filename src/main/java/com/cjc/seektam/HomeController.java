@@ -35,7 +35,6 @@ public class HomeController {
 	@RequestMapping("/loginpro")
 	public String loginPro(MemberDTO dto, Model model) throws Exception {
 		int result = memberService.idPwCheck(dto);
-		System.out.println("ctrler result : "+result);
 		model.addAttribute("result", result);
 		return "member/loginPro";
 	}
