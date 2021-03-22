@@ -1,3 +1,5 @@
+// 3/22 미사용중
+
 $(document).ready(function(){
 	$(document).on('click', '.control nav a', function(event){
 		history.pushState(null,null,event.target.href);
