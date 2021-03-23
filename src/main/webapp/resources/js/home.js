@@ -26,24 +26,21 @@
 	    
 	// 키워드 검색 완료 시 호출되는 콜백함수 입니다
 	function placesSearchCB (data, status, pagination) {
+		console.log(data);
+		$.ajax({
+			url : "/seektam/restaurant/getReputation",
+			type : "POST",
+			contentType : "application/json",
+			data : JSON.stringify(data),
+			dataType : "json",
+			success : function(result){
+				console.log(result);
+			}
+		});
 	    if (status === kakao.maps.services.Status.OK) {
-			var resIdList = new Array();
 	        for (var i=0; i<data.length; i++) {
-				//ajax로 db에서 평점 가져오기 
-				resIdList.push(data[i].id);
 	            displayMarker(data[i]);   
 	        }
-/* 추후 구현할 것
-			$.ajax({
-				url : "/seektam/restaurant/getReputation",
-				type : "get",
-				data : resIdList,
-				dataType : "json",
-				success : function(result){
-					console.log(result);
-				}
-			});
-*/
 	    }
 	}
 	

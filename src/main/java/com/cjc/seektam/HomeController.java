@@ -22,7 +22,7 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping("/")
+	@RequestMapping("/home")
 	public String home() {
 		return "home";
 	}

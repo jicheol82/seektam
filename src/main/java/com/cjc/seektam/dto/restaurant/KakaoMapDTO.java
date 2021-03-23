@@ -5,7 +5,7 @@ public class KakaoMapDTO {
 	private String category_group_code;
 	private String category_group_name;
 	private String category_name;
-	private Integer distance;
+	private String distance;
 	private Integer id;
 	private String phone;
 	private String place_name;
@@ -37,10 +37,10 @@ public class KakaoMapDTO {
 	public void setCategory_name(String category_name) {
 		this.category_name = category_name;
 	}
-	public Integer getDistance() {
+	public String getDistance() {
 		return distance;
 	}
-	public void setDistance(Integer distance) {
+	public void setDistance(String distance) {
 		this.distance = distance;
 	}
 	public Integer getId() {
