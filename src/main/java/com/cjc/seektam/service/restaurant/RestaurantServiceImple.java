@@ -26,20 +26,23 @@ public class RestaurantServiceImple implements RestaurantService {
 		return result;
 	}
 	@Override
-	public Map getPoints(List resList) {
+	public List getPoints(List resList) {
 		// 필요 객체 생성
 		List idList =  extractId(resList); // 식당정보에서 id만 추출
-		Map points = new HashMap();
+		List result = new ArrayList();
 		// db에 음식점id를 보내 음식점 정보가져오기
 		List<RestaurantDTO> list = restaurantDAO.getRestaurant(idList);
 		if(list!=null) {
 			for(RestaurantDTO dto : list) {
+				Map points = new HashMap();
 				//음식점의 평점만 추출하여 음식점id:평점 만듦
-				points.put(dto.getId(), dto.getPoint());
-				System.out.println("dto.getId()"+dto.getId());
-				System.out.println("dto.getPoint()"+dto.getPoint());
-				return points;
+				points.put("id", dto.getId());
+				points.put("point", dto.getPoint());
+				result.add(points);
+				System.out.println("id :"+dto.getId());
+				System.out.println("point :"+dto.getPoint());
 			}
+			return result;
 		}
 		// 검색 음식점의 평점이 없다면 null 반환
 		return null;

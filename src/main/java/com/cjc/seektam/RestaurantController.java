@@ -38,14 +38,13 @@ public class RestaurantController {
 	//받아온 평점을 /home에 표시한다
 	@ResponseBody
 	@RequestMapping("/restaurant/getPoint")
-	public Map<String, Object> getPint(@RequestBody String jsonData) {
+	public List<Map<String, Object>> getPint(@RequestBody String jsonData) {
 		// 넘어온 json data를 
 		List resList = jsonToDTOList(jsonData);
 		// 음식점id를 이용하여 평점 가져오기
-		Map<String, Object> map = restaurantService.getPoints(resList);
+		List map = (List) restaurantService.getPoints(resList);
+		//List result = new array
 		// 음식점id를 이용하여 평가(comment) 가져오기
-		System.out.println(map.toString());
-		System.out.println(map.get("1118826861"));
 		return map;
 	}
 	

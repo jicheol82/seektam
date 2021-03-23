@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface RestaurantService {
 	
-	public Map getPoints(List resList);
+	public List getPoints(List resList);
 }

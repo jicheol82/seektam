@@ -33,8 +33,8 @@ public class RestaurantDAOImple implements RestaurantDAO {
 	public List getRestaurant(List idList) {
 		System.out.println("RestaurantDAO에 들어옴");
 		System.out.println("idList 내용물은 "+idList.get(0));
+		System.out.println("idList 내용물은 "+idList.get(1));
 		List result = sqlSession.selectList("restaurant.selectRestaurant", idList);
-		System.out.println("dao에서 받아옴"+result.toString());
 		return result;
 	}
 
