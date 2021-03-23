@@ -3,50 +3,50 @@ package com.cjc.seektam.dto.restaurant;
 import java.sql.Timestamp;
 
 public class RestaurantDTO {
-	private Integer num;
-	private String name;
-	private String tel;
-	private String address;
-	private Integer longitude;
-	private Integer latitude;
+	private Integer id;
+	private String place_name;
+	private String phone;
+	private String road_address_name;
+	private String x;
+	private String y;
 	private Integer point;
 	private Timestamp reg;
 	
-	public Integer getNum() {
-		return num;
+	public Integer getId() {
+		return id;
 	}
-	public void setNum(Integer num) {
-		this.num = num;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getPlace_name() {
+		return place_name;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setPlace_name(String place_name) {
+		this.place_name = place_name;
 	}
-	public String getTel() {
-		return tel;
+	public String getPhone() {
+		return phone;
 	}
-	public void setTel(String tel) {
-		this.tel = tel;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public String getAddress() {
-		return address;
+	public String getRoad_address_name() {
+		return road_address_name;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setRoad_address_name(String road_address_name) {
+		this.road_address_name = road_address_name;
 	}
-	public Integer getLongitude() {
-		return longitude;
+	public String getX() {
+		return x;
 	}
-	public void setLongitude(Integer longitude) {
-		this.longitude = longitude;
+	public void setX(String x) {
+		this.x = x;
 	}
-	public Integer getLatitude() {
-		return latitude;
+	public String getY() {
+		return y;
 	}
-	public void setLatitude(Integer latitude) {
-		this.latitude = latitude;
+	public void setY(String y) {
+		this.y = y;
 	}
 	public Integer getPoint() {
 		return point;
@@ -60,5 +60,4 @@ public class RestaurantDTO {
 	public void setReg(Timestamp reg) {
 		this.reg = reg;
 	}
-	
 }

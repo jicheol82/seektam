@@ -1,5 +1,7 @@
 package com.cjc.seektam.dao.restaurant;
 
+import java.util.List;
+
 public interface RestaurantDAO {
 	//CRUD
 	//RESTAURANT에 record만들기
@@ -9,7 +11,7 @@ public interface RestaurantDAO {
 	//RESTAURANT에 record수정
 	public void modifyRestaurant();
 	//RESTAURANT에 record가져오기
-	public void getRestaurant();
+	public List getRestaurant(List idList);
 	
 	//RES_COMMENT에 record만들기
 	public void insertResComment();

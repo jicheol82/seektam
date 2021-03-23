@@ -13,11 +13,13 @@
 	<!-- 별칭 alias 설정-->
 	<typeAliases>
 		<typeAlias type="com.cjc.seektam.dto.member.MemberDTO" alias="memberDTO" />
+		<typeAlias type="com.cjc.seektam.dto.restaurant.RestaurantDTO" alias="restaurantDTO" />
 	</typeAliases>
 	
 	<!-- mapper 파일 위치 세팅-->
 	<mappers>
 		<mapper resource="/mapper/memberSQL.xml"/>
+		<mapper resource="/mapper/restaurantSQL.xml"/>
 	</mappers>
 	 
 </configuration>

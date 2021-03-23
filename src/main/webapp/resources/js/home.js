@@ -28,12 +28,13 @@
 	function placesSearchCB (data, status, pagination) {
 		console.log(data);
 		$.ajax({
-			url : "/seektam/restaurant/getReputation",
+			url : "/seektam/restaurant/getPoint",
 			type : "POST",
 			contentType : "application/json",
 			data : JSON.stringify(data),
 			dataType : "json",
 			success : function(result){
+				// db에서 평점 정보 가져와 인포윈도우에 뿌려줄것!(미작성)
 				console.log(result);
 			}
 		});
