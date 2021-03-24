@@ -8,10 +8,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cjc.seektam.dto.restaurant.ResCommentDTO;
 import com.cjc.seektam.dto.restaurant.RestaurantDTO;
 import com.cjc.seektam.service.restaurant.RestaurantService;
 import com.google.gson.Gson;
@@ -23,13 +25,20 @@ public class RestaurantController {
 	@Autowired
 	private RestaurantService restaurantService;
 	
-	public List jsonToDTOList(String jsonData) {
+	public List jsonToDTOList(String jsonData, String collectionType) {
 		// 넘어오는 자료에 빈칸이 있으면 (예를들어 "distance" : "") 받아주는 객체타입(KakadoMapDTO)에 
 		// private Integer distance라고 있으면 empty String 에러가 발생됨으로
 		// private String distance로 바꾸거나 없앰
 		Gson gson = new Gson();
-		Type mapListType = new TypeToken<ArrayList<RestaurantDTO>>() {}.getType();
-		List<RestaurantDTO> result = gson.fromJson(jsonData, mapListType);
+		List result = null;
+		Type mapListType = null;
+		if(collectionType.equals("RestaurantDTO")) {
+			mapListType = new TypeToken<ArrayList<RestaurantDTO>>() {}.getType();
+		}else if(collectionType.equals("ResCommentDTO")) {
+			mapListType = new TypeToken<ArrayList<ResCommentDTO>>() {}.getType();
+		}
+		
+		result = gson.fromJson(jsonData, mapListType);
 		return result;
 	}
 	
@@ -38,15 +47,26 @@ public class RestaurantController {
 	//받아온 평점을 /home에 표시한다
 	@ResponseBody
 	@RequestMapping("/restaurant/getPoint")
-	public List<Map<String, Object>> getPint(@RequestBody String jsonData) {
-		// 넘어온 json data를 
-		List resList = jsonToDTOList(jsonData);
+	public List<Map<String, Object>> getPoint(@RequestBody String jsonData) {
+		// 넘어온 json data를 list형식으로 변경
+		List convertedList = jsonToDTOList(jsonData, "RestaurantDTO");
 		// 음식점id를 이용하여 평점 가져오기
-		List map = (List) restaurantService.getPoints(resList);
+		List resultList = (List) restaurantService.getPoints(convertedList);
 		//List result = new array
 		// 음식점id를 이용하여 평가(comment) 가져오기
-		return map;
+		return resultList;
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping("/restaurant/getComment")
+	public List<Map<String, Object>> getComment(@RequestBody String json) {
+		//Gson gson = new Gson();
+		//Map<String, String> result = gson.fromJson(json, Map.class);
+		//넘어온 json data를 Map형식으로 변경 key=(user_id, res_id)
+		//res_id를 이용하여 평가글 가져오기
+		Map<String, String> idMap = new HashMap<String, String>();
+		restaurantService.getComments(idMap);
+		//음식점id를 이용하여 평가(comment) 가져오기
+		return null;
+	}
 }

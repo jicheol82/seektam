@@ -29,47 +29,35 @@
 	    
 	// 키워드 검색 완료 시 호출되는 콜백함수 입니다
 	function placesSearchCB (data, status, pagination) {
+		console.log("callComment실행");
+		callComment();
 	    if (status === kakao.maps.services.Status.OK) {
-	        for (var i=0; i<data.length; i++) {
-	            displayMarker(data[i]);   
-	        }
-	    }
-		// ajax가 나중에 실행되고 displayMarker가 먼저 실행되기 때문에
-		// db에서 받아온 point를 인포윈도우에 뿌릴수가 없다
-		// 
-		$.ajax({
-			url : "/seektam/restaurant/getPoint",
-			type : "POST",
-			contentType : "application/json",
-			data : JSON.stringify(data),
-			dataType : "json",
-			success : function(result){
-				console.log(result.length);
-				// db에서 평점 정보 가져와 인포윈도우에 뿌려줄것!(미작성)
-				
-				for(var j=0;j<result.length;j++){
-					console.log("result : ", result[j].id);
-					for(var i=0;i<data.length;i++){
-						if(data[i].id==result[j].id){
-							data[i].point=result[j].point;
-						}	
+			console.log(data);
+			// 식당 data를 서버로 보내 평점 data 가져와 'data'에 추가하기
+			$.ajax({
+				url : "/seektam/restaurant/getPoint",
+				type : "POST",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				dataType : "json",
+				success : function(result){
+					// db에 평점이 있는 식당'data'에 평점정보 추가
+					for(var j=0;j<result.length;j++){
+						for(var i=0;i<data.length;i++){
+							if(data[i].id==result[j].id){
+								data[i].point=result[j].point;
+							}	
+						}
 					}
+					// db에서 평점 정보 가져와 인포윈도우에 뿌려줌
+					for (var i=0; i<data.length; i++) {
+			            displayMarker(data[i]);   
+	      			}
+					// 화면 생성
+					// 상홍/전번/주소/평점 -> 클릭하면 평가글 불러오기
 				}
-			}
-		});
-		/*
-		$.ajax({
-			url : "/seektam/restaurant/getComment",
-			type : "POST",
-			contentType : "application/json",
-			data : JSON.stringify(data),
-			dataType : "json",
-			success : function(result){
-				// db에서 평점 정보 가져와 인포윈도우에 뿌려줄것!(미작성)
-				
-			}
-		});
-		*/
+			});
+	    }
 	}
 	
 	// 지도에 마커를 표시하는 함수입니다
@@ -79,17 +67,31 @@
 	        map: map,
 	        position: new kakao.maps.LatLng(place.y, place.x) 
 	    });
-		console.log(place);
-	    // 마커에 클릭이벤트를 등록합니다
+		var point = '';
+	    if(place.point!=null){
+			point=place.point+'점';
+		}
+		// 마커에 클릭이벤트를 등록합니다
 	    kakao.maps.event.addListener(marker, 'click', function() {
 	        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-	        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + ' ' + place.point +'점' + '</div>');
+	        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + ' ' + point + '</div>');
 	        infowindow.open(map, marker);
 	    });
 	}
 	
-	
-	
-	
-	//위 검색 결과로 테이블 만들기
-	
+	// 식당 data를 서버로 보내 식당평가 data를 가져와 화면에 생성한다
+	// 서버로는 보내도 서버에서 처리를 못하고 있음(3/24 오전)
+	// 백앤드 구현하고 할 것
+	function callComment(){
+		// 사용자 id와 식당 id 필요
+		var data1 = [{"user_id":"admin","res_id":1118826861}];
+		$.ajax({
+			url : "/seektam/restaurant/getComment",
+			type : "POST",
+			contentType : "application/json",
+			data : JSON.stringfy(data1),
+			dataType : "json",
+			success : function(result1){
+			}
+		});
+	}

@@ -14,12 +14,15 @@
 	<typeAliases>
 		<typeAlias type="com.cjc.seektam.dto.member.MemberDTO" alias="memberDTO" />
 		<typeAlias type="com.cjc.seektam.dto.restaurant.RestaurantDTO" alias="restaurantDTO" />
+		<typeAlias type="com.cjc.seektam.dto.restaurant.ResCommentDTO" alias="resCommentDTO" />
+		<typeAlias type="com.cjc.seektam.dto.group.GroupMemberDTO" alias="groupMemberDTO" />
 	</typeAliases>
 	
 	<!-- mapper 파일 위치 세팅-->
 	<mappers>
 		<mapper resource="/mapper/memberSQL.xml"/>
 		<mapper resource="/mapper/restaurantSQL.xml"/>
+		<mapper resource="/mapper/groupSQL.xml"/>
 	</mappers>
 	 
 </configuration>

@@ -2,29 +2,14 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="restaurant">
-	<select id="selectRestaurant" parameterType="map" resultType="restaurantDTO">
-		select * from restaurant where id in
-		<foreach collection="list" item="item" open="(" close=")" separator=",">
-			#{item}
-		</foreach>
+<mapper namespace="group">
+	<select id="findMyGr" resultType="groupMemberDTO">
+		select * from group_member where mem_id=#{userId} and relataion=1
 	</select>
 	
-	<select id="getResComment" resultType="resCommentDTO">
-		select * from (SELECT * from res_comment where res_num=#{resId}) where writer in 
-		<foreach collection="list" item="item" open="(" close=")" separator=",">
-			#{item}
-		</foreach>
-	</select>
-<!-- ////////////////////////////////////////////// -->	
-	
-	
-	
-	<insert id="insertMember" parameterType="memberDTO">
-		insert into member values(#{id},#{pw},#{email},#{mobile},#{area1},#{area2},#{birth},#{reputation},#{platform_type},#{access_token},sysdate)
-	</insert>
-	<select id="idPwCheck" parameterType="memberDTO" resultType="int">
-		select count(*) from member where id=#{id} and pw=#{pw}
+	<!-- //////////////////////////////////////////////////////////////// -->
+	<select id="selectMember" parameterType="string" resultType="memberDTO">
+		select * from member where id=#{id}
 	</select>
 	<update id="updateMember" parameterType="memberDTO">
 		<!-- 동적 sql -->
