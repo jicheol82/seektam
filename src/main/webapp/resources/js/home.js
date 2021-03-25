@@ -84,12 +84,15 @@
 	// 백앤드 구현하고 할 것
 	function callComment(){
 		// 사용자 id와 식당 id 필요
-		var data1 = [{"user_id":"admin","res_id":1118826861}];
+		var data1 = new Object();
+		data1.user_id = "admin";
+		data1.res_id = 1118826861;
+		console.log(data1);
 		$.ajax({
 			url : "/seektam/restaurant/getComment",
 			type : "POST",
 			contentType : "application/json",
-			data : JSON.stringfy(data1),
+			data : JSON.stringify(data1),
 			dataType : "json",
 			success : function(result1){
 			}

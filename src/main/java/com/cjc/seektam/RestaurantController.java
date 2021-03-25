@@ -60,12 +60,20 @@ public class RestaurantController {
 	@ResponseBody
 	@RequestMapping("/restaurant/getComment")
 	public List<Map<String, Object>> getComment(@RequestBody String json) {
-		//Gson gson = new Gson();
 		//Map<String, String> result = gson.fromJson(json, Map.class);
 		//넘어온 json data를 Map형식으로 변경 key=(user_id, res_id)
 		//res_id를 이용하여 평가글 가져오기
-		Map<String, String> idMap = new HashMap<String, String>();
-		restaurantService.getComments(idMap);
+		System.out.println("getComment controller in");
+		System.out.println("json : "+json);
+		Gson gson = new Gson();
+//		Map<String, Integer> idMap = gson.fromJson(json, Map.class);
+		Map idMap = gson.fromJson(json, Map.class);
+		System.out.println("idMap empty? " + idMap.isEmpty());
+		System.out.println("user_id : "+idMap.get("user_id"));
+		System.out.println("res_id : "+idMap.get("res_id"));
+		List<ResCommentDTO> result = restaurantService.getComments(idMap);
+		System.out.println("getComment controller out");
+		System.out.println("내용물 : "+result.get(0).getComments());
 		//음식점id를 이용하여 평가(comment) 가져오기
 		return null;
 	}

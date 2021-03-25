@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cjc.seektam.dto.restaurant.ResCommentDTO;
+
 @Repository
 public class RestaurantDAOImple implements RestaurantDAO {
 	@Autowired
@@ -55,9 +57,16 @@ public class RestaurantDAOImple implements RestaurantDAO {
 	}
 
 	@Override
-	public List getResComment(@Param("resId") String resId, @Param("myGrList") List myGrList) {
-		List result = sqlSession.selectList("restaurant.getResComment");
-		return null;
+	public List getResComment(@Param("resId") Double resId, @Param("myGrList") List myGrList) {
+		System.out.println("getComment dao in");
+		System.out.println("res_id : "+resId);
+		List<ResCommentDTO> result = sqlSession.selectList("restaurant.getResComment");
+		System.out.println("result empty? "+result.isEmpty());
+		System.out.println("result[0]? "+result.get(0));
+		System.out.println("content? "+result.get(0).getComments());
+		
+		System.out.println("getComment dao out");
+		return result;
 	}
 
 	@Override

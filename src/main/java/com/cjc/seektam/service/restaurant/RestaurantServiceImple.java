@@ -49,15 +49,21 @@ public class RestaurantServiceImple implements RestaurantService {
 	}
 	@Override
 	public List getComments(Map idMap) {
+		System.out.println("getComment service in");
 		// group_member에서 user_id 이용하여 가입 group찾기 : myGrList
 		String userId = (String) idMap.get("user_id");
+		System.out.println("userId : "+userId);
 		List myGrList = groupDAO.findMyGr(userId);
 		// res_comment에서 res_id의 글 중에서
 		// myGrList에있는 작성자가 쓴 글과
 		// open이 전체공개인 data를 가져온다 : list<RescommentDTO>
-		String resId = (String) idMap.get("res_id");
+		Double resId = (Double) idMap.get("res_id");
+		System.out.println("resId : "+resId);
+		myGrList.add("admin");
+		System.out.println("myGrList : "+myGrList);
 		List commentList = restaurantDAO.getResComment(resId, myGrList);
-		return null;
+		System.out.println("getComment service out");
+		return commentList;
 	}
 
 	

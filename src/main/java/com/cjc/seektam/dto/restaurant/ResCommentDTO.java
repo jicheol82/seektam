@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 public class ResCommentDTO {
 	private Integer num;
-	private Integer res_num;
+	private Double res_num;
 	private String writer;
-	private String contents;
+	private String comments;
 	private String img;
 	private Integer agree;
 	private Integer disagree;
@@ -20,10 +20,10 @@ public class ResCommentDTO {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
-	public Integer getRes_num() {
+	public Double getRes_num() {
 		return res_num;
 	}
-	public void setRes_num(Integer res_num) {
+	public void setRes_num(Double res_num) {
 		this.res_num = res_num;
 	}
 	public String getWriter() {
@@ -32,11 +32,12 @@ public class ResCommentDTO {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	public String getContents() {
-		return contents;
+	
+	public String getComments() {
+		return comments;
 	}
-	public void setContents(String contents) {
-		this.contents = contents;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 	public String getImg() {
 		return img;
