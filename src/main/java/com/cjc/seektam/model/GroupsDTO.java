@@ -1,4 +1,4 @@
-package com.cjc.seektam.dto.group;
+package com.cjc.seektam.model;
 
 import java.sql.Timestamp;
 

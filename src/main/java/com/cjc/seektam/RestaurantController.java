@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cjc.seektam.dto.restaurant.ResCommentDTO;
-import com.cjc.seektam.dto.restaurant.RestaurantDTO;
+import com.cjc.seektam.model.ResCommentDTO;
+import com.cjc.seektam.model.RestaurantDTO;
 import com.cjc.seektam.service.restaurant.RestaurantService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

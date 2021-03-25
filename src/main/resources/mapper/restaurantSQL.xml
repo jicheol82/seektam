@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="restaurant">
+<mapper namespace="com.cjc.seektam.mapper.RestaurantDAO">
 	<select id="selectRestaurant" parameterType="map" resultType="restaurantDTO">
 		select * from restaurant where id in
 		<foreach collection="list" item="item" open="(" close=")" separator=",">

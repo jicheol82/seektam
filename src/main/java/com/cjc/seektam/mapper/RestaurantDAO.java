@@ -1,7 +1,11 @@
-package com.cjc.seektam.dao.restaurant;
+package com.cjc.seektam.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+@Mapper
 public interface RestaurantDAO {
 	//CRUD
 	//RESTAURANT에 record만들기
@@ -20,7 +24,7 @@ public interface RestaurantDAO {
 	//RES_COMMENT에 record수정
 	public void modifyResComment();
 	//RES_COMMENT에 record가져오기
-	public List getResComment(Double resId, List myGrList);
+	public List getResComment(@Param("resId")Double resId, @Param("myGrList") List myGrList);
 	
 	//RES_Point에 record만들기
 	public void insertResPoint();

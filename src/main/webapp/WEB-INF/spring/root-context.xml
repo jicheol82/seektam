@@ -27,6 +27,7 @@
 		p:username="${db.username}"
 		p:password="${db.password}"	/>
 	
+	<!-- sql query문 로그용 -->
 	<bean id="logDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
 		<constructor-arg ref="dataSource" />
 		<property name="logFormatter">
@@ -38,12 +39,10 @@
 	</bean>
 
 	<!-- 컨넥션 풀 역할 -->
-
-
-
-	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
+		<property name="mapperLocations" value="classpath:/mapper/*.xml"/>
+		<property name="typeAliasesPackage" value="com.cjc.seektam.model"/>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
 	</bean>
 	<!-- 커넥션:클라이언트맵퍼라고 한다
@@ -52,8 +51,12 @@
 		mybatis는 연결이 되면 임시저장파일에 이전 접속 정보가 남아있기 때문에 컨넥션을 다시
 		처음부터 연결하지 않고 cache에 남아있는 정보를 가져다 쓰므로 빠르다. 그래서 대용량
 		처리에 유용하다.(조금 무거울지라도) -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.cjc.seektam.mapper"/>
+	</bean>
+	<!-- 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
-	
+	 -->
 </beans>

@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.cjc.seektam.dto.member.MemberDTO;
+
+import com.cjc.seektam.model.MemberDTO;
 import com.cjc.seektam.service.member.MemberService;
 
 /**

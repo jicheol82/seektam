@@ -1,4 +1,4 @@
-package com.cjc.seektam.dto.timeline;
+package com.cjc.seektam.model;
 
 public class TimelineDTO {
 	private Integer num;

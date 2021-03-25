@@ -1,11 +1,11 @@
-package com.cjc.seektam.dto.timeline;
+package com.cjc.seektam.model;
 
 import java.sql.Timestamp;
 
-public class UserMessageDTO {
+public class GroupMessageDTO {
 	private Integer num;
-	private String sender;
-	private String receiver;
+	private String gr_name;
+	private String writer;
 	private String message;
 	private Integer ref;
 	private Integer ref_level;
@@ -17,17 +17,17 @@ public class UserMessageDTO {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
-	public String getSender() {
-		return sender;
+	public String getGr_name() {
+		return gr_name;
 	}
-	public void setSender(String sender) {
-		this.sender = sender;
+	public void setGr_name(String gr_name) {
+		this.gr_name = gr_name;
 	}
-	public String getReceiver() {
-		return receiver;
+	public String getWriter() {
+		return writer;
 	}
-	public void setReceiver(String receiver) {
-		this.receiver = receiver;
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 	public String getMessage() {
 		return message;
@@ -54,4 +54,3 @@ public class UserMessageDTO {
 		this.reg = reg;
 	}
 }
-

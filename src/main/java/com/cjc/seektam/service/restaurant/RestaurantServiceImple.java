@@ -8,9 +8,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cjc.seektam.dao.group.GroupDAO;
-import com.cjc.seektam.dao.restaurant.RestaurantDAO;
-import com.cjc.seektam.dto.restaurant.RestaurantDTO;
+import com.cjc.seektam.mapper.GroupDAO;
+import com.cjc.seektam.mapper.RestaurantDAO;
+import com.cjc.seektam.model.RestaurantDTO;
+
 
 @Service
 public class RestaurantServiceImple implements RestaurantService {

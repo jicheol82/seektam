@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import com.cjc.seektam.dao.member.MemberDAO;
-import com.cjc.seektam.dto.member.MemberDTO;
+import com.cjc.seektam.mapper.MemberDAO;
+import com.cjc.seektam.model.MemberDTO;
 
 @Service
 public class MemberServiceImple implements MemberService {

@@ -1,9 +1,13 @@
-package com.cjc.seektam.dao.member;
+package com.cjc.seektam.mapper;
 
 import java.util.List;
 
-import com.cjc.seektam.dto.member.MemberDTO;
+import org.apache.ibatis.annotations.Mapper;
 
+import com.cjc.seektam.model.MemberDTO;
+
+
+@Mapper
 public interface MemberDAO {
 	//CRUD
 	//회원가입

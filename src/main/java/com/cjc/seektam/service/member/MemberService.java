@@ -1,6 +1,6 @@
 package com.cjc.seektam.service.member;
 
-import com.cjc.seektam.dto.member.MemberDTO;
+import com.cjc.seektam.model.MemberDTO;
 
 public interface MemberService {
 	//회원가입
