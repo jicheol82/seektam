@@ -9,10 +9,19 @@
 			#{item}
 		</foreach>
 	</select>
-	
+	<!-- // res_comment에서 writer가 myGrMembers이고 그룹공개(1) 또는
+		// 전체공개(0) 글 가져온다 -->
 	<select id="getResComment" resultType="resCommentDTO">
-		SELECT * from res_comment where res_num=#{resId}
-	
+		{call
+			declare
+				begin
+					select * from res_commet where res_num=#{resId} and open=0
+					select * from (SELECT * from res_comment where res_num=#{resId} and open=1) where writer in 
+					<foreach collection="myGrMembers" item="item" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+	 			end
+	 	}
 	</select>
 <!-- ////////////////////////////////////////////// -->	
 	

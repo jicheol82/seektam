@@ -1,4 +1,4 @@
-package com.cjc.seektam.service.restaurant;
+package com.cjc.seektam.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cjc.seektam.mapper.GroupDAO;
 import com.cjc.seektam.mapper.RestaurantDAO;
+import com.cjc.seektam.model.ResCommentDTO;
 import com.cjc.seektam.model.RestaurantDTO;
 
 
@@ -19,6 +20,7 @@ public class RestaurantServiceImple implements RestaurantService {
 	private RestaurantDAO restaurantDAO;
 	@Autowired
 	private GroupDAO groupDAO;
+	private MemberService memberService;
 	// 클라이언트에서 받아온 식당정보에서 식당id만 추출
 	public List extractId(List resList) {
 		List result = new ArrayList();
@@ -49,21 +51,27 @@ public class RestaurantServiceImple implements RestaurantService {
 		return null;
 	}
 	@Override
-	public List getComments(Map idMap) {
-		System.out.println("getComment service in");
-		// group_member에서 user_id 이용하여 가입 group찾기 : myGrList
-		String userId = (String) idMap.get("user_id");
-		System.out.println("userId : "+userId);
+	public List getComments(Map resIdMap) {
+		// Session에서 memId 가져오기
+		//String userId = memberService.getMemId();
+		// 테스트를 위해서 임으로 넣음
+		String userId = "admin";
+		// resId의 값 가져오기
+		String resId =(String)resIdMap.get("id");
+		System.out.println("resId"+resId);
+		// memId로 Group_member에서 가입 그룹 list 가져오기
 		List myGrList = groupDAO.findMyGr(userId);
-		// res_comment에서 res_id의 글 중에서
-		// myGrList에있는 작성자가 쓴 글과
-		// open이 전체공개인 data를 가져온다 : list<RescommentDTO>
-		Double resId = (Double) idMap.get("res_id");
-		System.out.println("resId : "+resId);
-		myGrList.add("admin");
-		System.out.println("myGrList : "+myGrList);
-		List commentList = restaurantDAO.getResComment(resId, myGrList);
-		System.out.println("getComment service out");
+		System.out.println("myGrList"+myGrList.get(0).toString());
+		// 가입그룹의 회원 가져오기
+		List myGrMembers = groupDAO.findGrMember(myGrList);
+		// res_comment에서 writer가 myGrMembers이고 그룹공개(1) 또는
+		// 전체공개(0) 글 가져온다
+		//넘어온 내용 확인
+		//List commentList = restaurantDAO.getResComment(resId, myGrMembers);
+		List<ResCommentDTO> commentList = restaurantDAO.getResComment(resId, myGrMembers);
+		for(ResCommentDTO dto : commentList) {
+			System.out.println(dto.getComments());
+		}
 		return commentList;
 	}
 

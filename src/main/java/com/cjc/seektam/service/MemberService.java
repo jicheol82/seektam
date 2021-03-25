@@ -1,8 +1,10 @@
-package com.cjc.seektam.service.member;
+package com.cjc.seektam.service;
 
 import com.cjc.seektam.model.MemberDTO;
 
 public interface MemberService {
+	// session에서 memId 받기
+	public String getMemId();
 	//회원가입
 	public void addMember(MemberDTO dto) throws Exception;
 	// 아이디 비번 확인

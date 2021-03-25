@@ -29,8 +29,6 @@
 	    
 	// 키워드 검색 완료 시 호출되는 콜백함수 입니다
 	function placesSearchCB (data, status, pagination) {
-		//console.log("callComment실행");
-		callComment();
 	    if (status === kakao.maps.services.Status.OK) {
 			console.log(data);
 			// 식당 data를 서버로 보내 평점 data 가져와 'data'에 추가하기
@@ -80,22 +78,20 @@
 	    });
 	}
 	
-	// 식당 data를 서버로 보내 식당평가 data를 가져와 화면에 생성한다
-	// 서버로는 보내도 서버에서 처리를 못하고 있음(3/24 오전)
-	// 백앤드 구현하고 할 것
-	function callComment(){
+	// 식당 id로 식당평가 data를 가져와 화면에 생성한다
+	function callComment(resId){
+		console.log(resId);
+		var jsonData = new Object();
+		jsonData.id = resId;
 		// 사용자 id와 식당 id 필요
-		var data1 = new Object();
-		data1.user_id = "admin";
-		data1.res_id = 1118826861;
-		console.log(data1);
 		$.ajax({
 			url : "/seektam/restaurant/getComment",
 			type : "POST",
 			contentType : "application/json",
-			data : JSON.stringify(data1),
+			data : JSON.stringify(jsonData),
 			dataType : "json",
-			success : function(result1){
+			success : function(result){
+				//화면에 뿌려주기
 			}
 		});
 	}

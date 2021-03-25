@@ -24,7 +24,7 @@ public interface RestaurantDAO {
 	//RES_COMMENT에 record수정
 	public void modifyResComment();
 	//RES_COMMENT에 record가져오기
-	public List getResComment(@Param("resId")Double resId, @Param("myGrList") List myGrList);
+	public List getResComment(@Param("resId")String resId, @Param("myGrMembers") List myGrMembers);
 	
 	//RES_Point에 record만들기
 	public void insertResPoint();

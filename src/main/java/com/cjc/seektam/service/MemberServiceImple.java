@@ -1,4 +1,4 @@
-package com.cjc.seektam.service.member;
+package com.cjc.seektam.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,12 @@ public class MemberServiceImple implements MemberService {
 	// DAO 호출되게 자동주입
 	@Autowired
 	private MemberDAO memberDAO = null;
+	
+	@Override
+	public String getMemId() {
+		return (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+	}
+	
 	@Override
 	public void addMember(MemberDTO dto) throws Exception {
 		memberDAO.insertMember(dto);
@@ -24,19 +30,12 @@ public class MemberServiceImple implements MemberService {
 		int result = memberDAO.idPwCheck(dto);
 		// result 결과가 1이면 로근인 처리 하고 세션 생성
 		if(result == 1) {
-			setSessionAttr("memId", dto);
+			RequestContextHolder.getRequestAttributes().setAttribute("memId", dto.getId(), RequestAttributes.SCOPE_SESSION);
 		}
 		// result 결과가 0이면 로그인 실패
 		return result;
 	}
 	
-	private void setSessionAttr(String sessionName, MemberDTO dto) {
-		// 세션생성은 controller에서 HttpSession session 매개변수 받아  전달 받던가(비추)
-		// session.setAttribute(~~~)
-		// RequestContextHolder를 사용하여 service에서 생성
-		RequestContextHolder.getRequestAttributes().setAttribute("memId", dto.getId(), RequestAttributes.SCOPE_SESSION);
-	}
-
 	@Override
 	public MemberDTO getMember(String id) throws Exception {
 		MemberDTO member = memberDAO.selectMember(id);
@@ -46,7 +45,7 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	public void modifyMember(MemberDTO dto) throws Exception {
 		// 수정 : dto(pw, age, email) id추가 되어야 함(session에서 꺼내기)
-		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		String id = getMemId();
 		dto.setId(id);
 		
 		// RequestContextHolder : controller, service, dao 전구간에서
