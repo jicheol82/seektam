@@ -11,10 +11,8 @@
 	</select>
 	
 	<select id="getResComment" resultType="resCommentDTO">
-		select * from (SELECT * from res_comment where res_num=#{resId}) where writer in 
-		<foreach collection="list" index="myGrList" item="item" open="(" close=")" separator=",">
-			#{item.value}
-		</foreach>
+		SELECT * from res_comment where res_num=#{resId}
+	
 	</select>
 <!-- ////////////////////////////////////////////// -->	
 	

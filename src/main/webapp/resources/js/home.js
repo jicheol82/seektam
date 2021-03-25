@@ -29,11 +29,12 @@
 	    
 	// 키워드 검색 완료 시 호출되는 콜백함수 입니다
 	function placesSearchCB (data, status, pagination) {
-		console.log("callComment실행");
+		//console.log("callComment실행");
 		callComment();
 	    if (status === kakao.maps.services.Status.OK) {
 			console.log(data);
 			// 식당 data를 서버로 보내 평점 data 가져와 'data'에 추가하기
+			/*
 			$.ajax({
 				url : "/seektam/restaurant/getPoint",
 				type : "POST",
@@ -56,7 +57,7 @@
 					// 화면 생성
 					// 상홍/전번/주소/평점 -> 클릭하면 평가글 불러오기
 				}
-			});
+			});*/
 	    }
 	}
 	

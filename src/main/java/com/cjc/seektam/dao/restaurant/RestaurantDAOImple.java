@@ -2,6 +2,7 @@ package com.cjc.seektam.dao.restaurant;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class RestaurantDAOImple implements RestaurantDAO {
 	}
 
 	@Override
-	public List getResComment(@Param("resId") Double resId, @Param("myGrList") List myGrList) {
+	public List getResComment(@Param("resId") Double resId, List myGrList) {
 		System.out.println("getComment dao in");
 		System.out.println("res_id : "+resId);
 		List<ResCommentDTO> result = sqlSession.selectList("restaurant.getResComment");
