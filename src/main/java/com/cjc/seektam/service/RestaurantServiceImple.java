@@ -2,6 +2,7 @@ package com.cjc.seektam.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cjc.seektam.mapper.GroupDAO;
+import com.cjc.seektam.mapper.MemberDAO;
 import com.cjc.seektam.mapper.RestaurantDAO;
+import com.cjc.seektam.model.AgreeRecordDTO;
+import com.cjc.seektam.model.MemberDTO;
 import com.cjc.seektam.model.ResCommentDTO;
 import com.cjc.seektam.model.RestaurantDTO;
 
@@ -20,7 +24,11 @@ public class RestaurantServiceImple implements RestaurantService {
 	private RestaurantDAO restaurantDAO;
 	@Autowired
 	private GroupDAO groupDAO;
+	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private MemberDAO memberDAO;
+	
 	// 클라이언트에서 받아온 식당정보에서 식당id만 추출
 	public List extractId(List resList) {
 		List result = new ArrayList();
@@ -36,7 +44,7 @@ public class RestaurantServiceImple implements RestaurantService {
 		List idList =  extractId(convertedList); // 식당정보에서 id만 추출
 		List result = new ArrayList();
 		// db에 음식점id를 보내 음식점 정보가져오기
-		List<RestaurantDTO> list = restaurantDAO.getRestaurant(idList);
+		List<RestaurantDTO> list = restaurantDAO.selectRestaurant(idList);
 		if(list!=null) {
 			for(RestaurantDTO dto : list) {
 				Map points = new HashMap();
@@ -58,22 +66,49 @@ public class RestaurantServiceImple implements RestaurantService {
 		String userId = "admin";
 		// resId의 값 가져오기
 		String resId =(String)resIdMap.get("id");
-		System.out.println("resId"+resId);
 		// memId로 Group_member에서 가입 그룹 list 가져오기
 		List myGrList = groupDAO.findMyGr(userId);
-		System.out.println("myGrList"+myGrList.get(0).toString());
 		// 가입그룹의 회원 가져오기
 		List myGrMembers = groupDAO.findGrMember(myGrList);
 		// res_comment에서 writer가 myGrMembers이고 그룹공개(1) 또는
 		// 전체공개(0) 글 가져온다
-		//넘어온 내용 확인
-		//List commentList = restaurantDAO.getResComment(resId, myGrMembers);
-		List<ResCommentDTO> commentList = restaurantDAO.getResComment(resId, myGrMembers);
-		for(ResCommentDTO dto : commentList) {
-			System.out.println(dto.getComments());
-		}
+		// 넘어온 내용 확인-getResComment0은 전체공개 글 모두 불러오고, getResComment1은 나와 같은 그룹원의 글중 그룹공개 글만 가져옴
+		List commentList = restaurantDAO.selectResComment0(resId);
+		commentList.addAll(restaurantDAO.selectResComment1(resId, myGrMembers));
+		//평가글의 인정율에 따라 순서 바꾸기
 		return commentList;
 	}
+	@Override
+	public ResCommentDTO voteToComment(Map voteResult)  {
+		System.out.println("service in");
+		// Map에 사용자id 추가
+		String memId = memberService.getMemId();
+			System.out.println("memId 생성 : "+memId);
+		voteResult.put("memId", memId);
+		// member 테이블에서 사용자의 평점 가중치 가져와 map에 추가
+		MemberDTO dto = memberDAO.selectMember(memId);
+		float weight = dto.getReputation();
+		voteResult.put("weight", weight);
+			System.out.println(voteResult.get(memId)+" 사용자의 가중치 : "+weight);
+		// 이전에 평가한 적이 있는지 확인
+		AgreeRecordDTO agreeDTO = restaurantDAO.selectAgreeRecord(voteResult);
+			System.out.println("평가글 이력이 없어? "+(agreeDTO.getId()).isEmpty());
+		if(!(agreeDTO.getId()).isEmpty()) {
+			// case1 : 평가했었고 이전 평가와 반대평가라면 Agree_record에 남아있는 wight를 res_comment에서 빼주고
+			// 새로 받아온 weight로 res_comment에 update한다
+			restaurantDAO.updateAgreeRecord(voteResult);
+		}
+		else {
+			// case2 : 평가한적이 없으면
+			// res_comment 테이블에 가중치 반영하여 평가글 인정/불인정 점수 높이기
+			restaurantDAO.updateResComment(voteResult);
+			// agree_record 테이블에 평가 기록하기(평가 이력이 없으면 insert/있으면 update)
+			restaurantDAO.insertAgreeRecord(voteResult);
+		}
+		
+		return null;
+	}
+	
 
 	
 }

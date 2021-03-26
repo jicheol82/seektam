@@ -1,42 +1,48 @@
 package com.cjc.seektam.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import com.cjc.seektam.model.AgreeRecordDTO;
 
 @Mapper
 public interface RestaurantDAO {
 	//CRUD
 	//RESTAURANT에 record만들기
-	public void insertRestaurant();
+	void insertRestaurant();
 	//RESTAURANT에 record삭제
-	public void deleteRestaurant();
+	void deleteRestaurant();
 	//RESTAURANT에 record수정
-	public void modifyRestaurant();
+	void updateRestaurant();
 	//RESTAURANT에 record가져오기
-	public List getRestaurant(List idList);
+	List selectRestaurant(List idList);
 	
 	//RES_COMMENT에 record만들기
-	public void insertResComment();
+	void insertResComment();
 	//RES_COMMENT에 record삭제
-	public void deleteResComment();
+	void deleteResComment();
 	//RES_COMMENT에 record수정
-	public void modifyResComment();
+	void updateResComment(Map map);
 	//RES_COMMENT에 record가져오기
-	public List getResComment(@Param("resId")String resId, @Param("myGrMembers") List myGrMembers);
+	List selectResComment0(@Param("resId")String resId);
+	List selectResComment1(@Param("resId")String resId, @Param("myGrMembers") List myGrMembers);
 	
 	//RES_Point에 record만들기
-	public void insertResPoint();
+	void insertResPoint();
 	//RES_Point에 record삭제
-	public void deleteResPoint();
+	void deleteResPoint();
 	//RES_Point에 record수정
-	public void modifyResPoint();
+	void updateResPoint();
 	//RES_Point에 record가져오기
-	public void getResPoint();
+	void selectResPoint();
 	
 	//AGREE_RECORD에 record만들기
-	public void insertAgreeRecord();
+	void insertAgreeRecord(Map map);
 	//AGREE_RECORD에 record가져오기
-	public void getAgreeRecord();
+	AgreeRecordDTO selectAgreeRecord(Map map);
+	//AGREE_RECORD에 record가져오기
+	void updateAgreeRecord(Map map);
 }

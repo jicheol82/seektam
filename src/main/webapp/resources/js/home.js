@@ -32,7 +32,6 @@
 	    if (status === kakao.maps.services.Status.OK) {
 			console.log(data);
 			// 식당 data를 서버로 보내 평점 data 가져와 'data'에 추가하기
-			/*
 			$.ajax({
 				url : "/seektam/restaurant/getPoint",
 				type : "POST",
@@ -55,7 +54,7 @@
 					// 화면 생성
 					// 상홍/전번/주소/평점 -> 클릭하면 평가글 불러오기
 				}
-			});*/
+			});
 	    }
 	}
 	
@@ -80,10 +79,9 @@
 	
 	// 식당 id로 식당평가 data를 가져와 화면에 생성한다
 	function callComment(resId){
-		console.log(resId);
 		var jsonData = new Object();
-		jsonData.id = resId;
 		// 사용자 id와 식당 id 필요
+		jsonData.id = resId;
 		$.ajax({
 			url : "/seektam/restaurant/getComment",
 			type : "POST",
@@ -91,7 +89,25 @@
 			data : JSON.stringify(jsonData),
 			dataType : "json",
 			success : function(result){
-				//화면에 뿌려주기
+				// 선택된 식당의 평가글이 화면에 보여진다
+			}
+		});
+	}
+	
+	// 인정/불인정 처리
+	function agreeOrNot(num, myDecide){
+		var jsonData = new Object();
+		jsonData.res_id = '1118826861';
+		jsonData.com_num = '14';
+		jsonData.decision = 'agree';
+		$.ajax({
+			url : "/seektam/restaurant/agree",
+			type : "POST",
+			contentType : "application/json",
+			data : JSON.stringify(jsonData),
+			dataType : "json",
+			success : function(result){
+				// 투표결과가 화면에 표시된다
 			}
 		});
 	}

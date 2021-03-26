@@ -67,6 +67,15 @@ public class RestaurantController {
 		Map resIdMap = gson.fromJson(jsonData, Map.class);
 		//음식점id를 이용하여 평가(comment) 가져오기
 		List<ResCommentDTO> result = restaurantService.getComments(resIdMap);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/restaurant/agree")
+	public ResCommentDTO voetToComment(@RequestBody String jsonData)  {
+		Gson gson = new Gson();
+		Map voteResult = gson.fromJson(jsonData, Map.class);
+		ResCommentDTO dto = restaurantService.voteToComment(voteResult);
 		return null;
 	}
 }

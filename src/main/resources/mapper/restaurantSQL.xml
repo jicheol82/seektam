@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cjc.seektam.mapper.RestaurantDAO">
+	<!-- 요청받은 레스토랑id들의 정보를 Restaurant에서 가져온다 -->
 	<select id="selectRestaurant" parameterType="map" resultType="restaurantDTO">
 		select * from restaurant where id in
 		<foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -10,19 +11,40 @@
 		</foreach>
 	</select>
 	<!-- // res_comment에서 writer가 myGrMembers이고 그룹공개(1) 또는
-		// 전체공개(0) 글 가져온다 -->
-	<select id="getResComment" resultType="resCommentDTO">
-		{call
-			declare
-				begin
-					select * from res_commet where res_num=#{resId} and open=0
-					select * from (SELECT * from res_comment where res_num=#{resId} and open=1) where writer in 
-					<foreach collection="myGrMembers" item="item" open="(" close=")" separator=",">
-						#{item}
-					</foreach>
-	 			end
-	 	}
+		// 전체공개(0) 글 가져온다 
+		-->
+	<select id="selectResComment0" resultType="resCommentDTO">
+		select * from res_comment where res_num=#{resId} and open=0
 	</select>
+	<select id="selectResComment1" resultType="resCommentDTO">
+		select * from (SELECT * from res_comment where res_num=#{resId} and open=1) where writer in 
+		<foreach collection="myGrMembers" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	<!-- 인정/불인정 결과를 업데이트한다 -->
+	<update id="updateResComment">
+		update res_comment 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="decision == 'agree'">agree = agree + ${weight},</if>
+			<if test="decision == 'disagree'">disagree = disagree + ${weight},</if>
+			num_of_vote = num_of_vote + 1
+		</trim>
+		where num=#{com_num} and writer=#{memId}
+	</update>
+	<!-- 인정/불인정 여부를 조회한다 -->
+	<select id="selectAgreeRecord">
+		select * from res_comment where num=#{com_num} and writer=#{memId}
+	</select>
+	<!-- 인정/불인정 투표 이력을 남긴다 -->
+	<!-- 테이블 새로 만들면 reg뒤에 weight는 reg앞으로 옮긴다 -->
+	<insert id="insertAgreeRecord">
+		insert 
+			into agree_record 
+		values 
+			(num=agree_record_seq.nextval, #{res_id}, #{memId} , #{decision}, #{weight})
+	</insert>
+	<!-- 이미 평가이력이 있기 때문에 기존의 weight를 resComment의 point에서 빼줘(-)야 한다 -->
 <!-- ////////////////////////////////////////////// -->	
 	
 	

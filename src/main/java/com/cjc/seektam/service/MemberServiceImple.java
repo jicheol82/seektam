@@ -16,16 +16,17 @@ public class MemberServiceImple implements MemberService {
 	
 	@Override
 	public String getMemId() {
-		return (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		String id = (String) RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		return id;
 	}
 	
 	@Override
-	public void addMember(MemberDTO dto) throws Exception {
+	public void addMember(MemberDTO dto)  {
 		memberDAO.insertMember(dto);
 	}
 
 	@Override
-	public int idPwCheck(MemberDTO dto) throws Exception {
+	public int idPwCheck(MemberDTO dto)  {
 		// id, pw로 check
 		int result = memberDAO.idPwCheck(dto);
 		// result 결과가 1이면 로근인 처리 하고 세션 생성
@@ -37,13 +38,13 @@ public class MemberServiceImple implements MemberService {
 	}
 	
 	@Override
-	public MemberDTO getMember(String id) throws Exception {
+	public MemberDTO getMember(String id)  {
 		MemberDTO member = memberDAO.selectMember(id);
 		return member;
 	}
 
 	@Override
-	public void modifyMember(MemberDTO dto) throws Exception {
+	public void modifyMember(MemberDTO dto)  {
 		// 수정 : dto(pw, age, email) id추가 되어야 함(session에서 꺼내기)
 		String id = getMemId();
 		dto.setId(id);
@@ -60,14 +61,14 @@ public class MemberServiceImple implements MemberService {
 	}
 
 	@Override
-	public int idCheck(String id) throws Exception {
+	public int idCheck(String id) {
 		// 전달받은 id를 dao한테 던져주고 동일한id가 있는지 확인
 		int check = memberDAO.idAvailCheck(id);
 		return check;
 	}
 
 	@Override
-	public void logout(String sessionName) throws Exception {
+	public void logout(String sessionName)  {
 		removeSessionAttr(sessionName);
 	}
 
@@ -76,10 +77,10 @@ public class MemberServiceImple implements MemberService {
 	}
 
 	@Override
-	public int deleteMember(MemberDTO dto) throws Exception {
+	public int deleteMember(MemberDTO dto) {
 		// db에 id, pw주고 이거 맞는지 확인 후
 		// 결과에 따라 회원삭제 처리
-		String id = (String) RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		String id = getMemId();
 		dto.setId(id);
 		int result = memberDAO.idPwCheck(dto);
 		// 맞으면 회원삭제 처리후 결과 리턴
@@ -89,4 +90,6 @@ public class MemberServiceImple implements MemberService {
 		}
 		return result;
 	}
+
+	
 }
