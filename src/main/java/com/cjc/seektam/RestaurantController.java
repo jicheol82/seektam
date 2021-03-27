@@ -9,11 +9,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cjc.seektam.model.ResCommentDTO;
+import com.cjc.seektam.model.ResPointDTO;
 import com.cjc.seektam.model.RestaurantDTO;
 import com.cjc.seektam.service.RestaurantService;
 import com.google.gson.Gson;
@@ -51,15 +53,15 @@ public class RestaurantController {
 		// 넘어온 json data를 list형식으로 변경
 		List convertedList = jsonToDTOList(jsonData, "RestaurantDTO");
 		// 음식점id를 이용하여 평점 가져오기
-		List resultList = (List) restaurantService.getPoints(convertedList);
+		List result = (List) restaurantService.getPoints(convertedList);
 		//List result = new array
 		// 음식점id를 이용하여 평가(comment) 가져오기
-		return resultList;
+		return result;
 	}
 	
 	@ResponseBody
 	@RequestMapping("/restaurant/getComment")
-	public List<ResCommentDTO> getComment(@RequestBody String jsonData) {
+	public List<ResCommentDTO> getComments(@RequestBody String jsonData) {
 		//Map<String, String> result = gson.fromJson(json, Map.class);
 		//넘어온 json data를 Map형식으로 변경 key=(user_id, res_id)
 		//res_id를 이용하여 평가글 가져오기
@@ -75,7 +77,19 @@ public class RestaurantController {
 	public ResCommentDTO voetToComment(@RequestBody String jsonData)  {
 		Gson gson = new Gson();
 		Map voteResult = gson.fromJson(jsonData, Map.class);
-		ResCommentDTO dto = restaurantService.voteToComment(voteResult);
+		ResCommentDTO result = restaurantService.voteToComment(voteResult);
+		return result;
+	}
+	
+	//식당평가글쓰기
+	@ResponseBody
+	@RequestMapping("/restaurant/writeComment")
+	public ResCommentDTO writeComment(@ModelAttribute ResCommentDTO commentDTO, @ModelAttribute ResPointDTO pointDTO) {
+		System.out.println(commentDTO.getComments());
+		System.out.println(pointDTO.getTaste());
+		restaurantService.writeComment(commentDTO, pointDTO);
 		return null;
 	}
+	
+	
 }

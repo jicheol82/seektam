@@ -42,9 +42,29 @@
 		insert 
 			into agree_record 
 		values 
-			(num=agree_record_seq.nextval, #{res_id}, #{memId} , #{decision}, #{weight})
+			(agree_record_seq.nextval, #{res_id}, #{memId} , #{decision}, #{weight})
 	</insert>
-	<!-- 이미 평가이력이 있기 때문에 기존의 weight를 resComment의 point에서 빼줘(-)야 한다 -->
+	<!-- 식당 평가글 등록 + 점수 등록 -->
+	<!--  -->
+	<insert id="insertResComment">
+		{call
+			declare
+				<![CDATA[
+				numSeq res_comment.num%TYPE;
+				]]>
+			begin
+				select res_comment_seq.nextval into numSeq from dual;
+				insert
+					into res_comment
+				values
+					(numSeq, #{comment.res_num}, #{comment.writer}, #{comment.comments}, #{comment.img}, default, default, default, #{comment.open}, sysdate);
+				insert
+					into res_point
+				values
+					(res_point_seq.nextval, #{point.res_num}, numSeq, sysdate, #{point.taste}, #{point.price}, #{point.kindness}, #{point.hygiene});
+			end
+		}
+	</insert>
 <!-- ////////////////////////////////////////////// -->	
 	
 	

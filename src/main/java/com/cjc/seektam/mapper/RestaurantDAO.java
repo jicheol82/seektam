@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.cjc.seektam.model.AgreeRecordDTO;
+import com.cjc.seektam.model.ResCommentDTO;
+import com.cjc.seektam.model.ResPointDTO;
 
 @Mapper
 public interface RestaurantDAO {
@@ -21,7 +23,7 @@ public interface RestaurantDAO {
 	List selectRestaurant(List idList);
 	
 	//RES_COMMENT에 record만들기
-	void insertResComment();
+	void insertResComment(@Param("comment") ResCommentDTO commentDTO, @Param("point") ResPointDTO pointDTO);
 	//RES_COMMENT에 record삭제
 	void deleteResComment();
 	//RES_COMMENT에 record수정
@@ -43,6 +45,5 @@ public interface RestaurantDAO {
 	void insertAgreeRecord(Map map);
 	//AGREE_RECORD에 record가져오기
 	AgreeRecordDTO selectAgreeRecord(Map map);
-	//AGREE_RECORD에 record가져오기
-	void updateAgreeRecord(Map map);
+
 }

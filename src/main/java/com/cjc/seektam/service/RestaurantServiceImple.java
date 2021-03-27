@@ -15,6 +15,7 @@ import com.cjc.seektam.mapper.RestaurantDAO;
 import com.cjc.seektam.model.AgreeRecordDTO;
 import com.cjc.seektam.model.MemberDTO;
 import com.cjc.seektam.model.ResCommentDTO;
+import com.cjc.seektam.model.ResPointDTO;
 import com.cjc.seektam.model.RestaurantDTO;
 
 
@@ -89,26 +90,27 @@ public class RestaurantServiceImple implements RestaurantService {
 		MemberDTO dto = memberDAO.selectMember(memId);
 		float weight = dto.getReputation();
 		voteResult.put("weight", weight);
-			System.out.println(voteResult.get(memId)+" 사용자의 가중치 : "+weight);
+			System.out.println("사용자의 가중치 : "+weight);
 		// 이전에 평가한 적이 있는지 확인
 		AgreeRecordDTO agreeDTO = restaurantDAO.selectAgreeRecord(voteResult);
 			System.out.println("평가글 이력이 없어? "+(agreeDTO.getId()).isEmpty());
-		if(!(agreeDTO.getId()).isEmpty()) {
-			// case1 : 평가했었고 이전 평가와 반대평가라면 Agree_record에 남아있는 wight를 res_comment에서 빼주고
-			// 새로 받아온 weight로 res_comment에 update한다
-			restaurantDAO.updateAgreeRecord(voteResult);
-		}
-		else {
-			// case2 : 평가한적이 없으면
+		if((agreeDTO.getId()).isEmpty()) {
+			//평가한적이 있으면 아무것도 하지 않음.
+			//평가한적이 없으면
 			// res_comment 테이블에 가중치 반영하여 평가글 인정/불인정 점수 높이기
 			restaurantDAO.updateResComment(voteResult);
 			// agree_record 테이블에 평가 기록하기(평가 이력이 없으면 insert/있으면 update)
 			restaurantDAO.insertAgreeRecord(voteResult);
 		}
-		
 		return null;
 	}
-	
+	//식당평가글쓰기+점수주기
+	@Override
+	public void writeComment(ResCommentDTO commentDTO, ResPointDTO pointDTO) {
+		restaurantDAO.insertResComment(commentDTO, pointDTO);
+	}
+	//수정은 안만듦
+	//식당평가글 삭제
 
 	
 }
