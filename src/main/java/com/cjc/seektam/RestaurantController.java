@@ -60,7 +60,7 @@ public class RestaurantController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/restaurant/getComment")
+	@RequestMapping("/restaurant/getcomments")
 	public Map getComments(@RequestBody String jsonData) {
 		//Map<String, String> result = gson.fromJson(json, Map.class);
 		//넘어온 json data를 Map형식으로 변경 key=(user_id, res_id)
