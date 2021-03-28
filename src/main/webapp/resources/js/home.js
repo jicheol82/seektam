@@ -12,9 +12,6 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 // 장소 검색 객체를 생성합니다
 var ps = new kakao.maps.services.Places(null); 
 
-// 평점
-var point;
-
 if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(function(position) {
         var lat = position.coords.latitude, // 위도
@@ -30,7 +27,6 @@ if(navigator.geolocation){
 // 키워드 검색 완료 시 호출되는 콜백함수 입니다
 function placesSearchCB (data, status, pagination) {
     if (status === kakao.maps.services.Status.OK) {
-		console.log(data);
 		// 식당 data를 서버로 보내 평점 data 가져와 'data'에 추가하기
 		$.ajax({
 			url : "/seektam/restaurant/getPoint",
@@ -79,12 +75,12 @@ function displayMarker(place) {
 }
 
 // 식당 id로 식당평가 data를 가져와 화면에 생성한다
-function callComment(resId){
+function getComments(resId){
 	var jsonData = new Object();
 	// 사용자 id와 식당 id 필요
 	jsonData.id = resId;
 	$.ajax({
-		url : "/seektam/restaurant/getComment",
+		url : "/seektam/restaurant/getcomments",
 		type : "POST",
 		contentType : "application/json",
 		data : JSON.stringify(jsonData),

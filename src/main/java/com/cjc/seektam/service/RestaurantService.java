@@ -12,7 +12,8 @@ import com.cjc.seektam.model.RestaurantDTO;
 public interface RestaurantService {
 	
 	public List getPoints(List convertedList);
-	public List getComments(Map resId);
+	public Map getComments(Map resId);
 	public ResCommentDTO voteToComment(Map voteResult);
 	public void writeComment(ResCommentDTO commentDTO, ResPointDTO pointDTO);
+	public void deleteComment(Map deleteData);
 }

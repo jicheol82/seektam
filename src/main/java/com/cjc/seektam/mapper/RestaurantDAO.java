@@ -25,21 +25,21 @@ public interface RestaurantDAO {
 	//RES_COMMENT에 record만들기
 	void insertResComment(@Param("comment") ResCommentDTO commentDTO, @Param("point") ResPointDTO pointDTO);
 	//RES_COMMENT에 record삭제
-	void deleteResComment();
+	void deleteResComment(Map deleteData);
 	//RES_COMMENT에 record수정
 	void updateResComment(Map map);
 	//RES_COMMENT에 record가져오기
 	List selectResComment0(@Param("resId")String resId);
 	List selectResComment1(@Param("resId")String resId, @Param("myGrMembers") List myGrMembers);
 	
-	//RES_Point에 record만들기
+	//RES_Point에 record만들기-comment 생성시 같이 생성됨
 	void insertResPoint();
-	//RES_Point에 record삭제
+	//RES_Point에 record삭제-comment 삭제시 같이 삭제됨
 	void deleteResPoint();
-	//RES_Point에 record수정
+	//RES_Point에 record수정-미사용
 	void updateResPoint();
 	//RES_Point에 record가져오기
-	void selectResPoint();
+	List selectResPoint(List refList);
 	
 	//AGREE_RECORD에 record만들기
 	void insertAgreeRecord(Map map);

@@ -60,7 +60,7 @@ public class RestaurantServiceImple implements RestaurantService {
 		return null;
 	}
 	@Override
-	public List getComments(Map resIdMap) {
+	public Map getComments(Map resIdMap) {
 		// Session에서 memId 가져오기
 		//String userId = memberService.getMemId();
 		// 테스트를 위해서 임으로 넣음
@@ -76,8 +76,19 @@ public class RestaurantServiceImple implements RestaurantService {
 		// 넘어온 내용 확인-getResComment0은 전체공개 글 모두 불러오고, getResComment1은 나와 같은 그룹원의 글중 그룹공개 글만 가져옴
 		List commentList = restaurantDAO.selectResComment0(resId);
 		commentList.addAll(restaurantDAO.selectResComment1(resId, myGrMembers));
+		
+		// 가져온 평가글의 평가점수 가져오기
+		List refList = new ArrayList();
+		for(int i=0; i<commentList.size(); i++) {
+			ResCommentDTO dto = (ResCommentDTO) commentList.get(i);
+			refList.add(dto.getNum());
+		}
+		List pointList = restaurantDAO.selectResPoint(refList);
 		//평가글의 인정율에 따라 순서 바꾸기
-		return commentList;
+		Map result = new HashMap();
+		result.put("comment", commentList);
+		result.put("point", pointList);
+		return result;
 	}
 	@Override
 	public ResCommentDTO voteToComment(Map voteResult)  {
@@ -107,10 +118,22 @@ public class RestaurantServiceImple implements RestaurantService {
 	//식당평가글쓰기+점수주기
 	@Override
 	public void writeComment(ResCommentDTO commentDTO, ResPointDTO pointDTO) {
+		//글 등록
 		restaurantDAO.insertResComment(commentDTO, pointDTO);
+		//등록된 글 가져오기(점수도)
 	}
 	//수정은 안만듦
 	//식당평가글 삭제
+	@Override
+	public void deleteComment(Map deleteData) {
+		String memId = memberService.getMemId();
+		if(deleteData.get("writer").equals(memId)) {
+			restaurantDAO.deleteResComment(deleteData);
+		}
+			
+		
+	}
+	
 
 	
 }

@@ -61,14 +61,14 @@ public class RestaurantController {
 	
 	@ResponseBody
 	@RequestMapping("/restaurant/getComment")
-	public List<ResCommentDTO> getComments(@RequestBody String jsonData) {
+	public Map getComments(@RequestBody String jsonData) {
 		//Map<String, String> result = gson.fromJson(json, Map.class);
 		//넘어온 json data를 Map형식으로 변경 key=(user_id, res_id)
 		//res_id를 이용하여 평가글 가져오기
 		Gson gson = new Gson();
 		Map resIdMap = gson.fromJson(jsonData, Map.class);
 		//음식점id를 이용하여 평가(comment) 가져오기
-		List<ResCommentDTO> result = restaurantService.getComments(resIdMap);
+		Map result = restaurantService.getComments(resIdMap);
 		return result;
 	}
 	
@@ -89,6 +89,15 @@ public class RestaurantController {
 		System.out.println(pointDTO.getTaste());
 		restaurantService.writeComment(commentDTO, pointDTO);
 		return null;
+	}
+	
+	//식당평가글삭제
+	@ResponseBody
+	@RequestMapping("/restaurant/deleteComment")
+	public void deleteComment(@RequestBody String jsonData) {
+		Gson gson = new Gson();
+		Map deleteData = gson.fromJson(jsonData, Map.class);
+		restaurantService.deleteComment(deleteData);
 	}
 	
 	
