@@ -29,8 +29,8 @@ public interface RestaurantDAO {
 	//RES_COMMENT에 record수정
 	void updateResComment(Map map);
 	//RES_COMMENT에 record가져오기
-	List selectResComment0(@Param("resId")String resId);
-	List selectResComment1(@Param("resId")String resId, @Param("myGrMembers") List myGrMembers);
+	List selectResComment0(@Param("resId")Double resId);
+	List selectResComment1(@Param("resId")Double resId, @Param("myGrMembers") List myGrMembers);
 	
 	//RES_Point에 record만들기-comment 생성시 같이 생성됨
 	void insertResPoint();

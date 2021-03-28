@@ -66,7 +66,7 @@ public class RestaurantServiceImple implements RestaurantService {
 		// 테스트를 위해서 임으로 넣음
 		String userId = "admin";
 		// resId의 값 가져오기
-		String resId =(String)resIdMap.get("id");
+		Double resId =(Double)resIdMap.get("id");
 		// memId로 Group_member에서 가입 그룹 list 가져오기
 		List myGrList = groupDAO.findMyGr(userId);
 		// 가입그룹의 회원 가져오기
@@ -78,17 +78,20 @@ public class RestaurantServiceImple implements RestaurantService {
 		commentList.addAll(restaurantDAO.selectResComment1(resId, myGrMembers));
 		
 		// 가져온 평가글의 평가점수 가져오기
-		List refList = new ArrayList();
-		for(int i=0; i<commentList.size(); i++) {
-			ResCommentDTO dto = (ResCommentDTO) commentList.get(i);
-			refList.add(dto.getNum());
+		if(!commentList.isEmpty()) {
+			List refList = new ArrayList();
+			for(int i=0; i<commentList.size(); i++) {
+				ResCommentDTO dto = (ResCommentDTO) commentList.get(i);
+				refList.add(dto.getNum());
+			}
+			List pointList = restaurantDAO.selectResPoint(refList);
+			//평가글의 인정율에 따라 순서 바꾸기
+			Map result = new HashMap();
+			result.put("comment", commentList);
+			result.put("point", pointList);
+			return result;
 		}
-		List pointList = restaurantDAO.selectResPoint(refList);
-		//평가글의 인정율에 따라 순서 바꾸기
-		Map result = new HashMap();
-		result.put("comment", commentList);
-		result.put("point", pointList);
-		return result;
+		return null;
 	}
 	@Override
 	public ResCommentDTO voteToComment(Map voteResult)  {

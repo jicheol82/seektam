@@ -65,6 +65,7 @@ public class RestaurantController {
 		//Map<String, String> result = gson.fromJson(json, Map.class);
 		//넘어온 json data를 Map형식으로 변경 key=(user_id, res_id)
 		//res_id를 이용하여 평가글 가져오기
+		System.out.println(jsonData);
 		Gson gson = new Gson();
 		Map resIdMap = gson.fromJson(jsonData, Map.class);
 		//음식점id를 이용하여 평가(comment) 가져오기

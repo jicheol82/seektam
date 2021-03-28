@@ -43,12 +43,20 @@ function placesSearchCB (data, status, pagination) {
 						}	
 					}
 				}
+				var tags=[];
 				// db에서 평점 정보 가져와 인포윈도우에 뿌려줌
 				for (var i=0; i<data.length; i++) {
-		            displayMarker(data[i]);   
+		            displayMarker(data[i]);
+					tags.push('<tr id="'+data[i].id+'">');
+					tags.push('<td><a href=# onclick="getComments('+ data[i].id +')">' + data[i].place_name + '</a></td>');
+					tags.push('<td>' + (data[i].point!=null ? data[i].point:'평가없음') + '</td>');
+					tags.push('<td>' + data[i].category_name + '</td>');
+					tags.push('<td>' + data[i].phone + '</td>');
+					tags.push('<td>' + data[i].road_address_name + '</td>');
+					tags.push('</tr>');
       			}
 				// 화면 생성
-				
+				$("#resTbBody").append(tags);
 				// 상홍/전번/주소/평점 -> 클릭하면 평가글 불러오기
 			}
 		});
@@ -76,8 +84,8 @@ function displayMarker(place) {
 
 // 식당 id로 식당평가 data를 가져와 화면에 생성한다
 function getComments(resId){
-	var jsonData = new Object();
 	// 사용자 id와 식당 id 필요
+	var jsonData = new Object();
 	jsonData.id = resId;
 	$.ajax({
 		url : "/seektam/restaurant/getcomments",
@@ -86,7 +94,26 @@ function getComments(resId){
 		data : JSON.stringify(jsonData),
 		dataType : "json",
 		success : function(result){
+			console.log(result);
+			console.log(result.comment);
+			console.log(result.comment.res_num);
+			var tags=[];
+			// 글 삽입 행을 삽입한다
+			/*
+			for (var i=0; i<result.comment.length; i++) {
+					tags.push('<tr id="'+data[i].id+'">');
+					tags.push('<td><a href=# onclick="getComments('+ data[i].id +')">' + data[i].place_name + '</a></td>');
+					tags.push('<td>' + (data[i].point!=null ? data[i].point:'평가없음') + '</td>');
+					tags.push('<td>' + data[i].category_name + '</td>');
+					tags.push('<td>' + data[i].phone + '</td>');
+					tags.push('<td>' + data[i].road_address_name + '</td>');
+					tags.push('</tr>');
+      			}
+				// 화면 생성
+				$("#resTbBody").append(tags);
 			// 선택된 식당의 평가글이 화면에 보여진다
+			tags.push()
+			*/
 		}
 	});
 }
