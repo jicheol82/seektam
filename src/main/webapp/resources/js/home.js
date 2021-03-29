@@ -44,9 +44,10 @@ function placesSearchCB (data, status, pagination) {
 					}
 				}
 				var tags="";
-				// db에서 평점 정보 가져와 인포윈도우에 뿌려줌
 				for (var i=0; i<data.length; i++) {
+					// db에서 평점 정보 가져와 인포윈도우에 뿌려줌
 		            displayMarker(data[i]);
+					// 지도에 표시된 식당정보 테이블 생성
 					tags+=('<tr id='+data[i].id+'>');
 					tags+='<td><a href=# onclick="getComments('+ data[i].id +')">' + data[i].place_name + '</a></td>';
 					tags+='<td>' + (data[i].point!=null ? data[i].point:'평가없음') + '</td>';
@@ -55,9 +56,8 @@ function placesSearchCB (data, status, pagination) {
 					tags+='<td>' + data[i].road_address_name + '</td>';
 					tags+='</tr>';
       			}
-				// 화면 생성
+				// 생성된 테이블을 home.jsp의 resTbBody에 삽입
 				$("#resTbBody").append(tags);
-				// 상홍/전번/주소/평점 -> 클릭하면 평가글 불러오기
 			}
 		});
     }
@@ -82,22 +82,23 @@ function displayMarker(place) {
     });
 }
 
-// 식당 id로 식당평가 data를 가져와 화면에 생성한다
+// #resTbBody에 생성된 식당명을 클릭하면 실행 (52행의 a태그)
 function getComments(resId){
+	// 식당평가를 할 수 있는 textarea생성
+	var tags="";
+	tags+='<tr>';
+	tags+='<td colspan="5"><textarea class="form-control col-sm-5"></textarea><br><br><br>';
+	tags+='맛 : <input type="text" name="taste" placeholder="1-5"/>'
+	tags+='가격 : <input type="text" name="price" placeholder="1-5"/>'
+	tags+='친철 : <input type="text" name="kindness" placeholder="1-5"/>'
+	tags+='위생 : <input type="text" name="hygiene" placeholder="1-5"/>'
+	tags+='<input type="button" class="btn btn-primary pull-right" value="글쓰기" id="writecomment"/></td>';
+	tags+='</tr>';
+	
+	// 식당평가글 불러오기
 	// 사용자 id와 식당 id 필요
 	var jsonData = new Object();
 	jsonData.id = resId;
-	console.log("jsonData",jsonData);
-	var inputArea="";
-	inputArea+='<tr>';
-	inputArea+='<td colspan="5"><textarea class="form-control col-sm-5"></textarea><br><br><br>';
-	inputArea+='맛 : <input type="text" name="taste" placeholder="1-5"/>'
-	inputArea+='가격 : <input type="text" name="price" placeholder="1-5"/>'
-	inputArea+='친철 : <input type="text" name="kindness" placeholder="1-5"/>'
-	inputArea+='위생 : <input type="text" name="hygiene" placeholder="1-5"/>'
-	inputArea+='<input type="button" class="btn btn-primary pull-right" value="글쓰기" id="writecomment"/></td>';
-	inputArea+='</tr>';
-	$('#'+resId).after(inputArea);
 	$.ajax({
 		url : "/seektam/restaurant/getcomments",
 		type : "POST",
@@ -105,30 +106,26 @@ function getComments(resId){
 		data : JSON.stringify(jsonData),
 		dataType : "json",
 		success : function(result){
+			
+			// 가져온 결과 확인용
 			console.log("jsonData",jsonData);
 			console.log(result);
 			console.log(result.comment);
-			console.log(result.comment.res_num);
-			var tags=[];
+			console.log(result.comment[0].res_num);
+			
 			// 글 삽입 행을 삽입한다
-			//$('"#"+result.comment.res_num').append(inputArea);
-			/*
 			for (var i=0; i<result.comment.length; i++) {
-					tags.push('<tr id="'+data[i].id+'">');
-					tags.push('<td><a href=# onclick="getComments('+ data[i].id +')">' + data[i].place_name + '</a></td>');
-					tags.push('<td>' + (data[i].point!=null ? data[i].point:'평가없음') + '</td>');
-					tags.push('<td>' + data[i].category_name + '</td>');
-					tags.push('<td>' + data[i].phone + '</td>');
-					tags.push('<td>' + data[i].road_address_name + '</td>');
-					tags.push('</tr>');
-      			}
-				// 화면 생성
-				$("#resTbBody").append(tags);
-			// 선택된 식당의 평가글이 화면에 보여진다
-			tags.push()
-			*/
+				tags+='<tr>';
+				tags+='<td colspan="4"><textarea class="form-control col-sm-5" value='+result.comment[i].getComments+'></textarea>';
+				tags+='<td>' ;
+				tags+='<a onclick='
+				tags+=result.comment[i].getAgree;
+				tags+='</td>';
+				tags+='</tr>';
+  			}
 		}
 	});
+	$('#'+resId).after(inputArea);
 }
 
 // 인정/불인정 처리
