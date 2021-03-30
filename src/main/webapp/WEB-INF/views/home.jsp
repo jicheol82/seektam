@@ -19,5 +19,4 @@
 		
 		</tbody>
 	</table>
-	</form>
 <jsp:include page="/WEB-INF/views/layout/bottomlayout.jsp"/>

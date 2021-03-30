@@ -12,5 +12,18 @@
 			#{item}
 		</foreach>
 	</select>
+	<!-- 내가 생성한 그룹 -->
+	<select id="selectMyGroup" resultType="groupsDTO">
+		select * from groups where group_leader=#{memId}
+	</select>
+	<!-- 내가 가입한 그룹의 정보와 그룹 가입일 join으로 가져오기 -->
+	<select id="findGrMembers" resultType="string">
+		<!--디비버에서 사용가능 확인 
+		SELECT g.name, g.area, g.GROUP_LEADER, g.NUM_OF_MEM, m.REG FROM groups g, group_member m WHERE g.NAME = m.GR_NAME AND m.MEM_ID='admin'; -->
+		select mem_id from group_member where gr_name in
+		<foreach collection="myGrList" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
 	<!-- //////////////////////////////////////////////////////////////// -->
 </mapper>
