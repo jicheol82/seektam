@@ -21,7 +21,7 @@
 		</script>
 	</c:if>
 	<c:if test="${result == 1}">
-		<c:redirect url="/"/>
+		<c:redirect url="/home"/>
 	</c:if>
 	
 <!-- Bootstrap core JavaScript

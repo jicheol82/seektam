@@ -22,7 +22,7 @@
 </c:if>
  -->
 	<h1 align="center"> 회원가입 </h1>
-	<form action="/seektam/signupPro" method="post" name="inputForm" >
+	<form action="/seektam/signuppro" method="post" name="inputForm" >
 		<table>
 			<tr>
 				<td>아이디*</td>

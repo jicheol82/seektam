@@ -2,7 +2,6 @@ package com.cjc.seektam.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +75,6 @@ public class RestaurantServiceImple implements RestaurantService {
 		// 넘어온 내용 확인-getResComment0은 전체공개 글 모두 불러오고, getResComment1은 나와 같은 그룹원의 글중 그룹공개 글만 가져옴
 		List commentList = restaurantDAO.selectResComment0(resId);
 		commentList.addAll(restaurantDAO.selectResComment1(resId, myGrMembers));
-		
 		// 가져온 평가글의 평가점수 가져오기
 		if(!commentList.isEmpty()) {
 			List refList = new ArrayList();
@@ -121,6 +119,9 @@ public class RestaurantServiceImple implements RestaurantService {
 	//식당평가글쓰기+점수주기
 	@Override
 	public void writeComment(ResCommentDTO commentDTO, ResPointDTO pointDTO) {
+		//사용자 정보 추가
+		String memId = memberService.getMemId();
+		commentDTO.setWriter(memId);
 		//글 등록
 		restaurantDAO.insertResComment(commentDTO, pointDTO);
 		//등록된 글 가져오기(점수도)
@@ -135,6 +136,12 @@ public class RestaurantServiceImple implements RestaurantService {
 		}
 			
 		
+	}
+	//평가글 작성시 식당을 등록한다
+	@Override
+	public void addRestaurant(RestaurantDTO resDTO) {
+		
+		restaurantDAO.insertRestaurant(resDTO);
 	}
 	
 

@@ -12,8 +12,11 @@
 	<!-- Custom styles for this template -->
 	<link href="/seektam/resources/dashboard/dashboard.css" rel="stylesheet">
 </head>
+<script>
+	alert("회원가입이 완료되었습니다.");
+	location="/seektam/home";
+</script>
 <body>
-	<h1>it is signupPro</h1>
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->

@@ -9,12 +9,13 @@ import org.apache.ibatis.annotations.Param;
 import com.cjc.seektam.model.AgreeRecordDTO;
 import com.cjc.seektam.model.ResCommentDTO;
 import com.cjc.seektam.model.ResPointDTO;
+import com.cjc.seektam.model.RestaurantDTO;
 
 @Mapper
 public interface RestaurantDAO {
 	//CRUD
 	//RESTAURANT에 record만들기
-	void insertRestaurant();
+	void insertRestaurant(RestaurantDTO resDTO);
 	//RESTAURANT에 record삭제
 	void deleteRestaurant();
 	//RESTAURANT에 record수정

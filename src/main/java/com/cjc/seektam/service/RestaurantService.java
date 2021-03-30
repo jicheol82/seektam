@@ -16,4 +16,5 @@ public interface RestaurantService {
 	public ResCommentDTO voteToComment(Map voteResult);
 	public void writeComment(ResCommentDTO commentDTO, ResPointDTO pointDTO);
 	public void deleteComment(Map deleteData);
+	public void addRestaurant(RestaurantDTO resDTO);
 }

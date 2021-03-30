@@ -11,7 +11,8 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 
 // 장소 검색 객체를 생성합니다
 var ps = new kakao.maps.services.Places(null); 
-
+// 화면에 표시된 식당정보
+var resData;
 if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(function(position) {
         var lat = position.coords.latitude, // 위도
@@ -26,6 +27,7 @@ if(navigator.geolocation){
     
 // 키워드 검색 완료 시 호출되는 콜백함수 입니다
 function placesSearchCB (data, status, pagination) {
+	resData = data;
     if (status === kakao.maps.services.Status.OK) {
 		// 식당 data를 서버로 보내 평점 data 가져와 'data'에 추가하기
 		$.ajax({
@@ -84,17 +86,22 @@ function displayMarker(place) {
 
 // #resTbBody에 생성된 식당명을 클릭하면 실행 (52행의 a태그)
 function getComments(resId){
+	// 이전에 열려 있는 행 삭제
+	$(".extendedrow").remove();
 	// 식당평가를 할 수 있는 textarea생성
 	var tags="";
-	tags+='<tr>';
-	tags+='<td colspan="5"><textarea class="form-control col-sm-5"></textarea><br><br><br>';
-	tags+='맛 : <input type="text" name="taste" placeholder="1-5"/>'
-	tags+='가격 : <input type="text" name="price" placeholder="1-5"/>'
-	tags+='친철 : <input type="text" name="kindness" placeholder="1-5"/>'
-	tags+='위생 : <input type="text" name="hygiene" placeholder="1-5"/>'
+	tags+='<tr class="extendedrow writeform">';
+	tags+='<td colspan="5"><textarea class="form-control col-sm-5" id="comment"></textarea><br><br><br>';
+	tags+='<input type="hidden" id="resId" value="'+resId+'">';
+	tags+='맛 : <input type="text" id="taste" placeholder="1-5"/>'
+	tags+='가격 : <input type="text" id="price" placeholder="1-5"/>'
+	tags+='친철 : <input type="text" id="kindness" placeholder="1-5"/>'
+	tags+='위생 : <input type="text" id="hygiene" placeholder="1-5"/>'
+	tags+='전체공개<input type="radio" name="open" id="open" value="0" checked="checked">';
+	tags+='그룹공개<input type="radio" name="open" id="open" value="1">';
 	tags+='<input type="button" class="btn btn-primary pull-right" value="글쓰기" id="writecomment"/></td>';
 	tags+='</tr>';
-	
+	$('#'+resId).after(tags); //ajax가 가장 나중에 실행되므로
 	// 식당평가글 불러오기
 	// 사용자 id와 식당 id 필요
 	var jsonData = new Object();
@@ -106,26 +113,24 @@ function getComments(resId){
 		data : JSON.stringify(jsonData),
 		dataType : "json",
 		success : function(result){
-			
-			// 가져온 결과 확인용
-			console.log("jsonData",jsonData);
-			console.log(result);
-			console.log(result.comment);
-			console.log(result.comment[0].res_num);
-			
 			// 글 삽입 행을 삽입한다
+			var tags="";
+			console.log(result.comment.length);
 			for (var i=0; i<result.comment.length; i++) {
-				tags+='<tr>';
-				tags+='<td colspan="4"><textarea class="form-control col-sm-5" value='+result.comment[i].getComments+'></textarea>';
+				var agreerate = result.comment[i].agree/result.comment[i].num_of_vote;
+				var disagreerate = result.comment[i].disagree/result.comment[i].num_of_vote;
+				tags+='<tr class="extendedrow">';
+				tags+='<td>'+result.comment[i].writer+'</td>'
+				tags+='<td colspan="3"><textarea class="form-control col-sm-5" disabled>'+result.comment[i].comments+'</textarea>';
+				tags+='</td>' ;
 				tags+='<td>' ;
-				tags+='<a onclick='
-				tags+=result.comment[i].getAgree;
+				tags+='인정 : '+result.comment[i].agree+' 불인정 : '+result.comment[i].disagree;
 				tags+='</td>';
 				tags+='</tr>';
   			}
+			$('#'+resId).after(tags); //ajax가 가장 나중에 실행되므로
 		}
 	});
-	$('#'+resId).after(inputArea);
 }
 
 // 인정/불인정 처리
@@ -142,37 +147,37 @@ function agreeOrNot(num, myDecide){
 		dataType : "json",
 		success : function(result){
 			// 투표결과가 화면에 표시된다
+			$(".writeform").remove();
 		}
 	});
 }
 
-//식당평가 글쓰기(res_id와 글내용 포함)
-function writeComment(comment){
-	// 테스트용 코드
-	var commentDTO = new Object();
-	commentDTO.res_num = '1118826861';
-	commentDTO.comments = '얀녕 맛있는 집이었어요';
-	commentDTO.img = null;
-	commentDTO.open = '0'; //0:전체 1:그룹
-	console.log(commentDTO);
-	data = {
-		num : 12,
-		res_num : 1118826861,
-		writer : "admin",
-		comments : "맛있다요",
-		img : null,
-		num_of_vote : 3, 
-		open : 0,
-		reg : "2021-03-27 15:55:20",
-		taste:3,
-		price:1,
-		kindness:3,
-		hygiene:5
-	};
-	console.log(data);
-	// 테스트용 코드
-	
-	
+//글쓰기 버튼 누르면 글 등록하기
+$(document).on('click', '#writecomment',function(){
+	var data = new Object();
+	data.res_num = $("#resId").val();
+	data.comments = $("#comment").val();
+	data.open = $("#open").val();
+	data.taste =$("#taste").val();
+	data.price =$("#price").val();
+	data.kindness =$("#kindness").val();
+	data.hygiene =$("#hygiene").val();
+	console.log(resData);
+	for(var i=0;i<resData.length;i++){
+		console.log(resData[i]);
+		if(data.res_num==resData[i].id){
+			$.ajax({
+				url : "/seektam/restaurant/addrestaurant",
+				type : "POST",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				data : resData[i],
+				dataType : "json",
+				success : function(){
+					//break;
+				}
+			});
+		}
+	}
 	$.ajax({
 		url : "/seektam/restaurant/writeComment",
 		type : "POST",
@@ -180,22 +185,7 @@ function writeComment(comment){
 		data : data,
 		dataType : "json",
 		success : function(result){
-			// 새글이 리스트에 표시된다
+		// 새글이 리스트에 표시된다
 		}
-	});
-}
-
-$(function(){
-	$("#writecomment").on("click", function(){
-		$.ajax({
-		url : "/seektam/restaurant/writeComment",
-		type : "POST",
-		contentType : "application/x-www-form-urlencoded; charset=utf-8",
-		data : data,
-		dataType : "json",
-		success : function(result){
-			// 새글이 리스트에 표시된다
-		}
-	});
 	});
 });

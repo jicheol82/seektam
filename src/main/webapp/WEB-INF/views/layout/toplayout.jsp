@@ -14,6 +14,8 @@
 	<link href="/seektam/resources/css/bootstrap.min.css" rel="stylesheet">
 	<!-- Custom styles for this template -->
 	<link href="/seektam/resources/dashboard/dashboard.css" rel="stylesheet">
+	<!-- js 파일안에서 jquery를 사용하기 위해 /body 앞에서 위로 올림 -->
+	 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
