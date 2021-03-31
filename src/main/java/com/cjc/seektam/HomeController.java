@@ -34,7 +34,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/loginpro")
-	public String loginPro(MemberDTO dto, Model model) throws Exception {
+	public String loginPro(MemberDTO dto, Model model) {
 		int result = memberService.idPwCheck(dto);
 		model.addAttribute("result", result);
 		return "member/loginPro";
@@ -46,13 +46,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/signuppro")
-	public String signupPro(MemberDTO dto) throws Exception {
+	public String signupPro(MemberDTO dto) {
 		memberService.addMember(dto);
 		return "member/signupPro";
 	}
 	
 	@RequestMapping("/confirmid")
-	public String confirmId(String id, Model model) throws Exception{
+	public String confirmId(String id, Model model){
 		int check = memberService.idCheck(id);
 		model.addAttribute("check", check);
 		model.addAttribute("trialId", id);

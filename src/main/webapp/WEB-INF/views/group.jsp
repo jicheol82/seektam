@@ -4,36 +4,11 @@
 <jsp:include page="/WEB-INF/views/layout/toplayout.jsp"/>
 	<script type="text/javascript" src="/seektam/resources/js/group.js"></script>
 	<div id="mine">
-		<c:if test="${groupMap.groupsDTO}==null">
-			<h3><input type="button" onclick="그룹생성페이지이동" value="그룹생성"></h3>
-		</c:if>
-		<c:if test="${groupMap.groupsDTO}!=null">
-			<table class="table">
-				<thead>
-					<tr>
-						<td>그룹명</td>
-						<td>활동지역</td>
-						<td>회원수</td>
-						<td>가입방법</td>
-						<td>생성일</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>${groupMap.groupsDTO.name}</td>
-						<td>${groupMap.groupsDTO.area}</td>
-						<td>${groupMap.groupsDTO.num_of_mem}</td>
-						<td>
-							<c:if test="${groupMap.groupsDTO.open}==0">신청제</c:if>
-							<c:if test="${groupMap.groupsDTO.open}==1">허가제</c:if>
-						</td>
-						<td>${groupMap.groupsDTO.reg}</td>
-					</tr>
-				</tbody>
-			</table>
-		</c:if>
+		<jsp:include page="/WEB-INF/views/html/myGroup.jsp"/>
 	</div>
-	<div id="myGroup">
+	<br/><br/><br/>
+	<div id="joinedGr">
+		<h3>내가 가입한 그룹</h3>
 		<table class="table">
 				<thead>
 					<tr>
@@ -41,30 +16,35 @@
 						<td>활동지역</td>
 						<td>회원수</td>
 						<td>가입일</td>
+						<td></td>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="myGroup" items="groupMap.myGroups">
+					<c:forEach var="joinedGr" items="${groupMap.joinedGrList}">
 					<tr>
-						<td>${myGroup.name}</td>
-						<td>${myGroup.area}</td>
-						<td>${myGroup.num_of_mem}</td>
-						<td>${myGroup.reg}</td>
+						<td>${joinedGr.name}</td>
+						<td>${joinedGr.area}</td>
+						<td>${joinedGr.num_of_mem}</td>
+						<td>${joinedGr.reg}</td>
+						<td><input type="button" onclick="" value="탈퇴"/></td>
 					</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 	</div>
+	<br/><br/><br/>
 	<div id="searchGroup">
+		<h3>그룹 검색하기</h3>
 		<table class="table">
 			<thead>
 				<tr>
-					<td colspan="7">
+					<td colspan="8">
 						<select name="search" id="search">
 							<option value="name">그룹명</option>
 							<option value="area">지역명</option>
 						</select>
 						<input type="text" name="keyword" id="keyword"/>
+						<input type="button" class="btn btn-primary pull-right" id="searchExe" value="검색"/>
 					</td>
 				</tr>
 				<tr>
@@ -75,6 +55,7 @@
 					<td>활동성</td>
 					<td>공개여부</td>
 					<td>등록일</td>
+					<td>가입/탈퇴</td>
 				</tr>
 			</thead>
 			<tbody id="searchResult"></tbody>

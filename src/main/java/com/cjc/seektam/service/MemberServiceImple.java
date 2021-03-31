@@ -68,8 +68,8 @@ public class MemberServiceImple implements MemberService {
 	}
 
 	@Override
-	public void logout(String sessionName)  {
-		removeSessionAttr(sessionName);
+	public void logout()  {
+		removeSessionAttr("memId");
 	}
 
 	private void removeSessionAttr(String sessionName) {

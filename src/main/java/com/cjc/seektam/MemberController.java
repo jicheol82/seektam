@@ -21,7 +21,7 @@ public class MemberController {
 		// 세션 지우는 서비스 메서드 호출, 내가 지울 세션이름 던져주기
 		// 로그아웃 뿐만 아니라
 		// 만약에 세션에 저장된 다른 속성을 지울때 같은 메서드 이용 가능
-		memberService.logout("memId");
+		memberService.logout();
 		return "member/logout";
 	}
 	

@@ -153,6 +153,7 @@ function agreeOrNot(num, myDecide){
 }
 
 //글쓰기 버튼 누르면 글 등록하기
+//객체로 보낼때는 application/x-www-form-urlencoded; charset=utf-8
 $(document).on('click', '#writecomment',function(){
 	var data = new Object();
 	data.res_num = $("#resId").val();
@@ -162,9 +163,8 @@ $(document).on('click', '#writecomment',function(){
 	data.price =$("#price").val();
 	data.kindness =$("#kindness").val();
 	data.hygiene =$("#hygiene").val();
-	console.log(resData);
+	//뭐였지?
 	for(var i=0;i<resData.length;i++){
-		console.log(resData[i]);
 		if(data.res_num==resData[i].id){
 			$.ajax({
 				url : "/seektam/restaurant/addrestaurant",
