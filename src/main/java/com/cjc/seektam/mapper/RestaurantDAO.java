@@ -13,7 +13,8 @@ import com.cjc.seektam.model.RestaurantDTO;
 
 @Mapper
 public interface RestaurantDAO {
-	//CRUD
+	//CRUD에 맞춰 db별로 미리 만듦
+	//사용안하는 메소드도 있음 mapper와 비교 필요
 	//RESTAURANT에 record만들기
 	void insertRestaurant(RestaurantDTO resDTO);
 	//RESTAURANT에 record삭제
@@ -30,8 +31,8 @@ public interface RestaurantDAO {
 	//RES_COMMENT에 record수정
 	void updateResComment(Map map);
 	//RES_COMMENT에 record가져오기
-	List selectResComment0(@Param("resId")Double resId);
-	List selectResComment1(@Param("resId")Double resId, @Param("myGrMembers") List myGrMembers);
+	List selectResComment0(@Param("resId")Double resId); //숫자가커서 Double로 선언했던것 같음 그러면 @Param없이 sql이 작동안했던듯
+	List selectResComment1(@Param("resId")Double resId, @Param("myGrMembers") List myGrMembers); //맵퍼로 바꾼이유! 두개의 parameter를 Map으로 변경하지 않고 쓰기 위해서
 	
 	//RES_Point에 record만들기-comment 생성시 같이 생성됨
 	void insertResPoint();

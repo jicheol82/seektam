@@ -9,7 +9,6 @@ import com.cjc.seektam.model.MemberDTO;
 
 @Mapper
 public interface MemberDAO {
-	//CRUD
 	//회원가입
 	public void insertMember(MemberDTO dto) ;
 	//아이디 비번 확인
@@ -20,6 +19,6 @@ public interface MemberDAO {
 	public void updateMember(MemberDTO dto) ;
 	//회원탈퇴
 	public void deleteMember(String id) ;
-	//아이디 사용가능 여부
+	//유효id확인
 	public int idAvailCheck(String id) ;
 }

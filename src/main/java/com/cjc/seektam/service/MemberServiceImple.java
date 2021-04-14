@@ -12,10 +12,12 @@ import com.cjc.seektam.model.MemberDTO;
 public class MemberServiceImple implements MemberService {
 	// DAO 호출되게 자동주입
 	@Autowired
-	private MemberDAO memberDAO = null;
+	private MemberDAO memberDAO;
 	
 	@Override
 	public String getMemId() {
+		//"memId"라는 세션명도 매개변수로 받아서 사용하는 것이
+		//다양한 세션명에도 대응 가능함
 		String id = (String) RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		return id;
 	}
@@ -32,6 +34,10 @@ public class MemberServiceImple implements MemberService {
 		// result 결과가 1이면 로근인 처리 하고 세션 생성
 		if(result == 1) {
 			RequestContextHolder.getRequestAttributes().setAttribute("memId", dto.getId(), RequestAttributes.SCOPE_SESSION);
+			// return true; 해주고
+			// 바깥은 return false; 가 이해하기 쉬울 듯
+			// 다른 메소드도 진행결과의 성공/실패를 확인하기 위해 return type은 void가 아닌
+			// boolean이 좋을 것 같다
 		}
 		// result 결과가 0이면 로그인 실패
 		return result;
@@ -49,6 +55,7 @@ public class MemberServiceImple implements MemberService {
 		String id = getMemId();
 		dto.setId(id);
 		
+		// 이 아래 메모는 수업시간 메모 그대로 가져온 것
 		// RequestContextHolder : controller, service, dao 전구간에서
 		// HttpServletRequest에 접근할 수 있도록 도와주는 클래스
 		// request 객체 꺼내기
@@ -69,6 +76,9 @@ public class MemberServiceImple implements MemberService {
 
 	@Override
 	public void logout()  {
+		//"memId"라는 세션명도 매개변수로 받아서 사용하는 것이
+		//다양한 세션명에도 대응 가능함
+		//바로밑의 removeSessionAttr처럼
 		removeSessionAttr("memId");
 	}
 

@@ -39,8 +39,6 @@ public class GroupController {
 	public int makeMyGr(@RequestBody String jsonData) {
 		Gson gson = new Gson();
 		GroupsDTO groupsDTO = gson.fromJson(jsonData, GroupsDTO.class);
-		System.out.println(groupsDTO.getName());
-		System.out.println(groupsDTO.getOpen());
 		int result = groupService.createMyGr(groupsDTO);
 		return result;
 	}

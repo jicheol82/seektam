@@ -48,7 +48,7 @@ function placesSearchCB (data, status, pagination) {
 				var tags="";
 				for (var i=0; i<data.length; i++) {
 					// db에서 평점 정보 가져와 인포윈도우에 뿌려줌
-		            displayMarker(data[i]);
+		            displayMarker(data[i]); // 카카오맵 api의 기능인데 ajax밖에서 실행되면 무조건 ajax보다 먼저 실행되므로 ajax안에 넣어서 실행순서 바꿈
 					// 지도에 표시된 식당정보 테이블 생성
 					tags+=('<tr id='+data[i].id+'>');
 					tags+='<td><a href=# onclick="getComments('+ data[i].id +')">' + data[i].place_name + '</a></td>';
@@ -89,6 +89,7 @@ function getComments(resId){
 	// 이전에 열려 있는 행 삭제
 	$(".extendedrow").remove();
 	// 식당평가를 할 수 있는 textarea생성
+	// 너무 지저분함 jsp:include 비슷한 기능이 있을 것임...
 	var tags="";
 	tags+='<tr class="extendedrow writeform">';
 	tags+='<td colspan="5"><textarea class="form-control col-sm-5" id="comment"></textarea><br><br><br>';
@@ -101,7 +102,7 @@ function getComments(resId){
 	tags+='그룹공개<input type="radio" name="open" id="open" value="1">';
 	tags+='<input type="button" class="btn btn-primary pull-right" value="글쓰기" id="writecomment"/></td>';
 	tags+='</tr>';
-	$('#'+resId).after(tags); //ajax가 가장 나중에 실행되므로
+	$('#'+resId).after(tags); //ajax가 가장 나중에 실행되므로 이곳에서 우선 tags 삽임
 	// 식당평가글 불러오기
 	// 사용자 id와 식당 id 필요
 	var jsonData = new Object();
@@ -128,7 +129,7 @@ function getComments(resId){
 				tags+='</td>';
 				tags+='</tr>';
   			}
-			$('#'+resId).after(tags); //ajax가 가장 나중에 실행되므로
+			$('#'+resId).after(tags); 
 		}
 	});
 }
@@ -155,6 +156,7 @@ function agreeOrNot(num, myDecide){
 //글쓰기 버튼 누르면 글 등록하기
 //객체로 보낼때는 application/x-www-form-urlencoded; charset=utf-8
 $(document).on('click', '#writecomment',function(){
+	// 글 옮겨줄 객체 생성
 	var data = new Object();
 	data.res_num = $("#resId").val();
 	data.comments = $("#comment").val();
@@ -163,7 +165,7 @@ $(document).on('click', '#writecomment',function(){
 	data.price =$("#price").val();
 	data.kindness =$("#kindness").val();
 	data.hygiene =$("#hygiene").val();
-	//뭐였지?
+	//
 	for(var i=0;i<resData.length;i++){
 		if(data.res_num==resData[i].id){
 			$.ajax({

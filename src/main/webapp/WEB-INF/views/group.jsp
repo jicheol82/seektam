@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- nnavibar와 sidebar 부분 -->
 <jsp:include page="/WEB-INF/views/layout/toplayout.jsp"/>
 	<script type="text/javascript" src="/seektam/resources/js/group.js"></script>
 	<div id="mine">
@@ -61,4 +62,5 @@
 			<tbody id="searchResult"></tbody>
 		</table>
 	</div>
+<!-- body 아래의 script 추가 부분 -->
 <jsp:include page="/WEB-INF/views/layout/bottomlayout.jsp"/>
